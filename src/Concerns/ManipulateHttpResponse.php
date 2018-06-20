@@ -66,7 +66,7 @@ trait ManipulateHttpResponse
      *
      * @param int $duration
      *
-     * @return integer|double
+     * @return int|float
      */
     protected function getCacheDuration($duration)
     {
