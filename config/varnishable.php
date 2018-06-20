@@ -88,15 +88,4 @@ return [
     */
     'esi_reply_header' => 'Surrogate-Control',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Varnish cache invalidator manager class
-    |--------------------------------------------------------------------------
-    |
-    | You need to specify the varnish cache invalidator manager class that will
-    | be used to invalidate varnish cache by the model observer.
-    |
-    */
-    'invalidator_manager' => \RichanFongdasen\Varnishable\VarnishInvalidatorManager::class,
-
 ];
