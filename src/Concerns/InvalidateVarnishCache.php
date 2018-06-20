@@ -7,7 +7,7 @@ trait InvalidateVarnishCache
     /**
      * Flush entire cache for an application hostname.
      *
-     * @param string $hostname [description]
+     * @param string $hostname
      *
      * @return void
      */

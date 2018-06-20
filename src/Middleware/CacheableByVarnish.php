@@ -14,7 +14,7 @@ class CacheableByVarnish
      *
      * @return mixed
      */
-    public function handle($request, Closure $next, int $cacheDuration = null)
+    public function handle($request, Closure $next, $cacheDuration = null)
     {
         \Varnishable::setRequestHeaders($request->headers);
 

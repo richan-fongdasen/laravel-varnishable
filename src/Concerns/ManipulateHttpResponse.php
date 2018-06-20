@@ -40,7 +40,7 @@ trait ManipulateHttpResponse
      */
     protected function addCacheableHeader(Response $response, $cacheDuration)
     {
-        $duration = $this->getCacheDuration($cacheDuration);
+        $duration = $this->getCacheDuration((int) $cacheDuration);
 
         return $response->header($this->getConfig('cacheable_header'), '1')
                 ->header('Cache-Control', 'public, max-age='.$duration);
@@ -70,7 +70,7 @@ trait ManipulateHttpResponse
      */
     protected function getCacheDuration($duration)
     {
-        $cacheInMinutes = ((int) $duration > 0) ? $duration : $this->getConfig('cache_duration');
+        $cacheInMinutes = ($duration > 0) ? $duration : $this->getConfig('cache_duration');
 
         return $cacheInMinutes * 60;
     }
@@ -91,7 +91,7 @@ trait ManipulateHttpResponse
             return $response;
         }
 
-        $this->addCacheableHeader($response, (int) $cacheDuration);
+        $this->addCacheableHeader($response, $cacheDuration);
         $this->addEtagHeader($response);
 
         return $response;
@@ -110,7 +110,7 @@ trait ManipulateHttpResponse
     /**
      * Check if the current response shouldn't be cached.
      *
-     * @param \Illuminate\Http\Response $response [description]
+     * @param \Illuminate\Http\Response $response
      *
      * @return bool
      */
