@@ -10,7 +10,7 @@ trait ManipulateHttpResponse
     /**
      * HTTP Request object.
      *
-     * @var \Illuminate\Http\Request
+     * @var \Symfony\Component\HttpFoundation\HeaderBag
      */
     protected $requestHeaders;
 
@@ -66,7 +66,7 @@ trait ManipulateHttpResponse
      *
      * @param int $duration
      *
-     * @return int
+     * @return integer|double
      */
     protected function getCacheDuration($duration)
     {
@@ -112,7 +112,7 @@ trait ManipulateHttpResponse
      *
      * @param \Illuminate\Http\Response $response
      *
-     * @return bool
+     * @return string|array
      */
     protected function shouldNotCache(Response $response)
     {
