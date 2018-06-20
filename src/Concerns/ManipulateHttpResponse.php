@@ -19,6 +19,7 @@ trait ManipulateHttpResponse
      * HTTP header as a reply.
      *
      * @param \Illuminate\Http\Response $response
+     *
      * @return void
      */
     protected function acknowledgeEsiSupport(Response $response)
@@ -42,13 +43,14 @@ trait ManipulateHttpResponse
         $duration = $this->getCacheDuration($cacheDuration);
 
         return $response->header($this->getConfig('cacheable_header'), '1')
-                ->header('Cache-Control', 'public, max-age=' . $duration);
+                ->header('Cache-Control', 'public, max-age='.$duration);
     }
 
     /**
      * Add an ETag header to the current response.
      *
      * @param \Illuminate\Http\Response $response
+     *
      * @return void
      */
     protected function addEtagHeader(Response $response)
@@ -63,6 +65,7 @@ trait ManipulateHttpResponse
      * it to seconds.
      *
      * @param int $duration
+     *
      * @return int
      */
     protected function getCacheDuration($duration)
@@ -77,12 +80,13 @@ trait ManipulateHttpResponse
      *
      * @param \Illuminate\Http\Response $response
      * @param int                       $cacheDuration
+     *
      * @return \Illuminate\Http\Response
      */
     public function manipulate(Response $response, $cacheDuration)
     {
         $this->acknowledgeEsiSupport($response);
-        
+
         if ($this->shouldNotCache($response)) {
             return $response;
         }
@@ -105,9 +109,10 @@ trait ManipulateHttpResponse
 
     /**
      * Check if the current response shouldn't be cached.
-     * 
-     * @param  \Illuminate\Http\Response $response [description]
-     * @return boolean
+     *
+     * @param \Illuminate\Http\Response $response [description]
+     *
+     * @return bool
      */
     protected function shouldNotCache(Response $response)
     {
@@ -117,7 +122,8 @@ trait ManipulateHttpResponse
     /**
      * Get configuration value for a specific key.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return mixed
      */
     abstract public function getConfig($key);

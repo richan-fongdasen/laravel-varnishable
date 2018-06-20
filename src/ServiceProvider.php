@@ -29,7 +29,7 @@ class ServiceProvider extends Provider
         $this->mergeConfigFrom(realpath(__DIR__.'/../config/varnishable.php'), 'varnishable');
 
         $this->app->singleton(VarnishableService::class, function () {
-            return new VarnishableService(new Client);
+            return new VarnishableService(new Client());
         });
     }
 }

@@ -10,7 +10,7 @@ class VarnishableService
 {
     use InvalidateVarnishCache;
     use ManipulateHttpResponse;
-    
+
     /**
      * Varnishable configurations.
      *
@@ -39,7 +39,8 @@ class VarnishableService
     /**
      * Get configuration value for a specific key.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return mixed
      */
     public function getConfig($key)
