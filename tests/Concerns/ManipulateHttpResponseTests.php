@@ -93,6 +93,16 @@ class ManipulateHttpResponseTests extends TestCase
     }
 
     /** @test */
+    public function it_can_add_uncacheable_header_to_the_current_response_object()
+    {
+        $this->service->addUncacheableHeader($this->response);
+
+        $uncacheable = $this->response->headers->get(\Varnishable::getConfig('uncacheable_header'));
+
+        $this->assertEquals('1', $uncacheable);
+    }
+
+    /** @test */
     public function it_can_calculate_total_cache_duration_in_seconds()
     {
         $data = [5, 15, 30, 60];

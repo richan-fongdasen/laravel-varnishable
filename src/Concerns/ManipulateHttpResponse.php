@@ -47,6 +47,17 @@ trait ManipulateHttpResponse
     }
 
     /**
+     * Add uncacheable header so varnish can recognize
+     * the response as an uncacheable content.
+     *
+     * @param \Illuminate\Http\Response $response
+     */
+    public function addUncacheableHeader(Response $response)
+    {
+        return $response->header($this->getConfig('uncacheable_header'), '1');
+    }
+
+    /**
      * Add an ETag header to the current response.
      *
      * @param \Illuminate\Http\Response $response
