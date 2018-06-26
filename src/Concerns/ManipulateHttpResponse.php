@@ -2,8 +2,8 @@
 
 namespace RichanFongdasen\Varnishable\Concerns;
 
-use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\HeaderBag;
+use Symfony\Component\HttpFoundation\Response;
 
 trait ManipulateHttpResponse
 {
@@ -18,7 +18,7 @@ trait ManipulateHttpResponse
      * Acknowledge the ESI support and send a specific
      * HTTP header as a reply.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response $response
      *
      * @return void
      */
@@ -27,7 +27,7 @@ trait ManipulateHttpResponse
         $esiHeader = $this->getConfig('esi_capability_header');
 
         if ($esiHeader = $this->requestHeaders->get($esiHeader)) {
-            $response->header($this->getConfig('esi_reply_header'), $esiHeader);
+            $response->headers->set($this->getConfig('esi_reply_header'), $esiHeader);
         }
     }
 
@@ -35,32 +35,34 @@ trait ManipulateHttpResponse
      * Add cacheable header so varnish can recognize
      * the response as a cacheable content.
      *
-     * @param \Illuminate\Http\Response $response
-     * @param int                       $cacheDuration
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param int                                        $cacheDuration
      */
     protected function addCacheableHeader(Response $response, $cacheDuration)
     {
         $duration = $this->getCacheDuration((int) $cacheDuration);
 
-        return $response->header($this->getConfig('cacheable_header'), '1')
-                ->header('Cache-Control', 'public, max-age='.$duration);
+        $response->headers->set($this->getConfig('cacheable_header'), '1');
+        $response->headers->set('Cache-Control', 'public, max-age='.$duration);
+
+        return $response;
     }
 
     /**
      * Add uncacheable header so varnish can recognize
      * the response as an uncacheable content.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response $response
      */
     public function addUncacheableHeader(Response $response)
     {
-        return $response->header($this->getConfig('uncacheable_header'), '1');
+        return $response->headers->set($this->getConfig('uncacheable_header'), '1');
     }
 
     /**
      * Add an ETag header to the current response.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response $response
      *
      * @return void
      */
@@ -89,10 +91,10 @@ trait ManipulateHttpResponse
     /**
      * Manipulate the current Http response.
      *
-     * @param \Illuminate\Http\Response $response
-     * @param int                       $cacheDuration
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param int                                        $cacheDuration
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function manipulate(Response $response, $cacheDuration)
     {
@@ -121,7 +123,7 @@ trait ManipulateHttpResponse
     /**
      * Check if the current response shouldn't be cached.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response $response
      *
      * @return string|array
      */
