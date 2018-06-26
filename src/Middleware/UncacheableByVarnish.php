@@ -3,18 +3,19 @@
 namespace RichanFongdasen\Varnishable\Middleware;
 
 use Closure;
+use Symfony\Component\HttpFoundation\Request;
 
 class UncacheableByVarnish
 {
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Closure                                  $next
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
 
