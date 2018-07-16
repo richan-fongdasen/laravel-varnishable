@@ -4,7 +4,6 @@ namespace RichanFongdasen\Varnishable;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider as Provider;
-use RichanFongdasen\Varnishable\VarnishableObserver;
 
 class ServiceProvider extends Provider
 {
