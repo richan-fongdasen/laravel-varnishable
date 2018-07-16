@@ -4,6 +4,7 @@ namespace RichanFongdasen\Varnishable;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider as Provider;
+use RichanFongdasen\Varnishable\VarnishableObserver;
 
 class ServiceProvider extends Provider
 {
@@ -30,6 +31,10 @@ class ServiceProvider extends Provider
 
         $this->app->singleton(VarnishableService::class, function () {
             return new VarnishableService(new Client());
+        });
+
+        $this->app->singleton(VarnishableObserver::class, function () {
+            return new VarnishableObserver();
         });
     }
 }

@@ -27,6 +27,16 @@ class VarnishableServiceTests extends TestCase
     }
 
     /** @test */
+    public function it_returns_all_of_configurations_on_empty_key()
+    {
+        $configs = $this->service->getConfig();
+
+        $this->assertTrue(is_array($configs));
+        $this->assertEquals('127.0.0.1', $configs['varnish_hosts']);
+        $this->assertEquals('8888', $configs['varnish_port']);
+    }
+
+    /** @test */
     public function it_returns_configuration_values_correctly()
     {
         $this->assertEquals(8888, $this->service->getConfig('varnish_port'));
@@ -41,6 +51,14 @@ class VarnishableServiceTests extends TestCase
         $guzzle = $this->service->getGuzzle();
 
         $this->assertInstanceOf(Client::class, $guzzle);
+    }
+
+    /** @test */
+    public function it_can_set_configuration_values_at_runtime()
+    {
+        $this->service->setConfig('cache_duration', 600);
+
+        $this->assertEquals(600, $this->service->getConfig('cache_duration'));
     }
 
     /** @test */
