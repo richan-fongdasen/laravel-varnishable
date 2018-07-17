@@ -53,7 +53,7 @@ trait ManageLastModifiedHeader
     /**
      * Get last modified header for the current response.
      *
-     * @return string
+     * @return \Carbon\Carbon|null
      */
     public function getLastModifiedHeader()
     {

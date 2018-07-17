@@ -61,6 +61,7 @@ abstract class TestCase extends BaseTest
         
         return [
             \Illuminate\Cache\CacheServiceProvider::class,
+            \Illuminate\Events\EventServiceProvider::class,
             \Orchestra\Database\ConsoleServiceProvider::class,
             \RichanFongdasen\Varnishable\ServiceProvider::class,
         ];
@@ -148,7 +149,5 @@ abstract class TestCase extends BaseTest
             realpath(__DIR__ . '/Supports/database/migrations'),
             realpath(__DIR__ . '/Supports/database/factories')
         );
-
-        factory(User::class, 25)->create();
     }
 }
