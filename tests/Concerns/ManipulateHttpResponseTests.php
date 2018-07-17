@@ -80,19 +80,6 @@ class ManipulateHttpResponseTests extends TestCase
     }
 
     /** @test */
-    public function it_can_add_an_etag_header_to_the_current_response_object()
-    {
-        $content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-
-        $this->response->setContent($content);
-
-        $this->invokeMethod($this->service, 'addEtagHeader', [$this->response]);
-
-        $actual = $this->response->headers->get('etag');
-        $this->assertEquals('"'. md5($content) .'"', $actual);
-    }
-
-    /** @test */
     public function it_can_add_uncacheable_header_to_the_current_response_object()
     {
         $this->service->addUncacheableHeader($this->response);
@@ -118,11 +105,8 @@ class ManipulateHttpResponseTests extends TestCase
     /** @test */
     public function it_can_fully_manipulate_http_response_as_expected()
     {
-        $content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-
         $this->headers->set(\Varnishable::getConfig('esi_capability_header'), 'v1.0');
         $this->response->header(\Varnishable::getConfig('cacheable_header'), '1');
-        $this->response->setContent($content);
 
         $this->service->setRequestHeaders($this->headers);
 
@@ -136,9 +120,6 @@ class ManipulateHttpResponseTests extends TestCase
 
         $actual = $this->response->headers->get('Cache-Control');
         $this->assertEquals('max-age=7200, public', $actual);
-
-        $actual = $this->response->headers->get('etag');
-        $this->assertEquals('"'. md5($content) .'"', $actual);
     }
 
     /** @test */
@@ -155,9 +136,6 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertEquals('v1.0', $actual);
 
         $actual = $this->response->headers->get(\Varnishable::getConfig('cacheable_header'));
-        $this->assertNull($actual);
-
-        $actual = $this->response->headers->get('etag');
         $this->assertNull($actual);
     }
 

@@ -57,13 +57,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Use ETag
+    | Use ETag Header
     |--------------------------------------------------------------------------
     |
-    | Please specify if you want to use ETag for any of your static contents.
+    | Please specify if you want to use ETag header for any of your static 
+    | contents.
     |
     */
     'use_etag' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Use Last-Modified Header
+    |--------------------------------------------------------------------------
+    |
+    | Please specify if you want to use Last-Modified header for any of your 
+    | static contents.
+    |
+    */
+    'use_last_modified' => true,
 
     /*
     |--------------------------------------------------------------------------

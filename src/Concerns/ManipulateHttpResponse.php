@@ -60,20 +60,6 @@ trait ManipulateHttpResponse
     }
 
     /**
-     * Add an ETag header to the current response.
-     *
-     * @param \Symfony\Component\HttpFoundation\Response $response
-     *
-     * @return void
-     */
-    protected function addEtagHeader(Response $response)
-    {
-        if ($this->getConfig('use_etag')) {
-            $response->setEtag(md5($response->getContent()));
-        }
-    }
-
-    /**
      * Normalize the given cache duration and convert
      * it to seconds.
      *
@@ -105,6 +91,7 @@ trait ManipulateHttpResponse
         }
 
         $this->addCacheableHeader($response, $cacheDuration);
+        $this->addLastModifiedHeader($response);
         $this->addEtagHeader($response);
 
         return $response;
@@ -131,6 +118,24 @@ trait ManipulateHttpResponse
     {
         return $response->headers->get($this->getConfig('uncacheable_header'));
     }
+
+    /**
+     * Add an ETag header to the current response.
+     *
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     *
+     * @return void
+     */
+    abstract protected function addEtagHeader(Response $response);
+
+    /**
+     * Add Last-Modified header to the current response.
+     *
+     * @param \Symfony\Component\HttpFoundation\Response $response
+     *
+     * @return void
+     */
+    abstract protected function addLastModifiedHeader(Response $response);
 
     /**
      * Get configuration value for a specific key.

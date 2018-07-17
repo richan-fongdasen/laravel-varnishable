@@ -4,11 +4,15 @@ namespace RichanFongdasen\Varnishable;
 
 use GuzzleHttp\Client;
 use RichanFongdasen\Varnishable\Concerns\InvalidateVarnishCache;
+use RichanFongdasen\Varnishable\Concerns\ManageEtagHeader;
+use RichanFongdasen\Varnishable\Concerns\ManageLastModifiedHeader;
 use RichanFongdasen\Varnishable\Concerns\ManipulateHttpResponse;
 
 class VarnishableService
 {
     use InvalidateVarnishCache;
+    use ManageEtagHeader;
+    use ManageLastModifiedHeader;
     use ManipulateHttpResponse;
 
     /**
@@ -39,12 +43,16 @@ class VarnishableService
     /**
      * Get configuration value for a specific key.
      *
-     * @param string $key
+     * @param string|null $key
      *
      * @return mixed
      */
-    public function getConfig($key)
+    public function getConfig($key = null)
     {
+        if ($key === null) {
+            return $this->config;
+        }
+
         return data_get($this->config, $key);
     }
 
@@ -66,6 +74,19 @@ class VarnishableService
     public function loadConfig()
     {
         $this->config = app('config')->get('varnishable');
+    }
+
+    /**
+     * Set configuration value for a specific key.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return void
+     */
+    public function setConfig($key, $value)
+    {
+        $this->config[$key] = $value;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace RichanFongdasen\Varnishable\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTest;
+use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
 
 abstract class TestCase extends BaseTest
 {
@@ -21,9 +22,16 @@ abstract class TestCase extends BaseTest
      */
     protected function getEnvironmentSetUp($app)
     {
-        $this->app = $app;
-
+        $app['config']->set('cache.default', 'array');
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
         $app['config']->set('varnishable.application_hosts', 'localhost:8000');
+
+        $this->app = $app;
     }
 
     /**
@@ -52,6 +60,9 @@ abstract class TestCase extends BaseTest
         $this->app = $app;
         
         return [
+            \Illuminate\Cache\CacheServiceProvider::class,
+            \Illuminate\Events\EventServiceProvider::class,
+            \Orchestra\Database\ConsoleServiceProvider::class,
             \RichanFongdasen\Varnishable\ServiceProvider::class,
         ];
     }
@@ -90,6 +101,29 @@ abstract class TestCase extends BaseTest
     }
 
     /**
+     * Prepare database requirements
+     * to perform any tests.
+     *
+     * @param  string $migrationPath
+     * @param  string $factoryPath
+     * @return void
+     */
+    protected function prepareDatabase($migrationPath, $factoryPath = null)
+    {
+        $this->loadMigrationsFrom($migrationPath);
+
+        if (!$factoryPath) {
+            return;
+        }
+
+        if (method_exists($this, 'withFactories')) {
+            $this->withFactories($factoryPath);
+        } else {
+            $this->app->make(ModelFactory::class)->load($factoryPath);
+        }
+    }
+
+    /**
      * Prepare to get an exception in a test
      *
      * @param  mixed $exception
@@ -110,5 +144,10 @@ abstract class TestCase extends BaseTest
     public function setUp()
     {
         parent::setUp();
+
+        $this->prepareDatabase(
+            realpath(__DIR__ . '/Supports/database/migrations'),
+            realpath(__DIR__ . '/Supports/database/factories')
+        );
     }
 }
