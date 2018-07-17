@@ -2,7 +2,6 @@
 
 namespace RichanFongdasen\Varnishable;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
 use RichanFongdasen\Varnishable\Events\ModelHasUpdated;
 
@@ -24,7 +23,7 @@ class VarnishableObserver
      * Handle any retrieved and wakeup events on
      * the observed models.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return void
      */
@@ -38,7 +37,7 @@ class VarnishableObserver
     /**
      * Handle any update events on the observed models.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return void
      */

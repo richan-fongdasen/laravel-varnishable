@@ -26,6 +26,6 @@ trait Varnishable
     {
         parent::__wakeup();
 
-        event('eloquent.wakeup: ' . get_class($this), $this);
+        event('eloquent.wakeup: '.get_class($this), $this);
     }
 }
