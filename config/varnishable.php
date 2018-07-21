@@ -8,10 +8,10 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify the hostnames of your varnish instances. You can use array
-    | to specify multiple hostnames.
+    | to specify multiple varnish instances.
     |
     */
-    'varnish_hosts' => '127.0.0.1',
+    'varnish_hosts' => env('VARNISH_HOST', '127.0.0.1'),
 
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +21,7 @@ return [
     | Specify the port number that your varnish instances are listening to.
     |
     */
-    'varnish_port' => 6081,
+    'varnish_port' => env('VARNISH_PORT', 6081),
 
     /*
     |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ return [
     | Specify the default varnish cache duration in minutes.
     |
     */
-    'cache_duration' => 15,
+    'cache_duration' => env('VARNISH_DURATION', 60 * 24),
 
     /*
     |--------------------------------------------------------------------------
