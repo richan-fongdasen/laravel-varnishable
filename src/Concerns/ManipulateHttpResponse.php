@@ -36,11 +36,10 @@ trait ManipulateHttpResponse
      * the response as a cacheable content.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param int                                        $cacheDuration
      */
-    protected function addCacheableHeader(Response $response, $cacheDuration)
+    protected function addCacheableHeader(Response $response)
     {
-        $duration = $this->getCacheDuration((int) $cacheDuration);
+        $duration = $this->getCacheDuration();
 
         $response->headers->set($this->getConfig('cacheable_header'), '1');
         $response->headers->set('Cache-Control', 'public, max-age='.$duration);
@@ -60,29 +59,24 @@ trait ManipulateHttpResponse
     }
 
     /**
-     * Normalize the given cache duration and convert
+     * Normalize the cache duration value and convert
      * it to seconds.
-     *
-     * @param int $duration
      *
      * @return int|float
      */
-    protected function getCacheDuration($duration)
+    protected function getCacheDuration()
     {
-        $cacheInMinutes = ($duration > 0) ? $duration : $this->getConfig('cache_duration');
-
-        return $cacheInMinutes * 60;
+        return $this->getConfig('cache_duration') * 60;
     }
 
     /**
      * Manipulate the current Http response.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param int                                        $cacheDuration
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function manipulate(Response $response, $cacheDuration)
+    public function manipulate(Response $response)
     {
         $this->acknowledgeEsiSupport($response);
 
@@ -90,11 +84,22 @@ trait ManipulateHttpResponse
             return $response;
         }
 
-        $this->addCacheableHeader($response, $cacheDuration);
+        $this->addCacheableHeader($response);
         $this->addLastModifiedHeader($response);
         $this->addEtagHeader($response);
 
         return $response;
+    }
+
+    /**
+     * Set cache duration value in minutes. This value will
+     * be added to the HTTP response's Cache-Control header.
+     *
+     * @param int $duration [Cache duration value in minutes]
+     */
+    public function setCacheDuration($duration)
+    {
+        $this->setConfig('cache_duration', (int) $duration);
     }
 
     /**
@@ -145,4 +150,14 @@ trait ManipulateHttpResponse
      * @return mixed
      */
     abstract public function getConfig($key);
+
+    /**
+     * Set configuration value for a specific key.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return void
+     */
+    abstract public function setConfig($key, $value);
 }
