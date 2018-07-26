@@ -70,7 +70,8 @@ class ManipulateHttpResponseTests extends TestCase
     /** @test */
     public function it_can_add_cacheable_header_to_the_current_response_object()
     {
-        $this->invokeMethod($this->service, 'addCacheableHeader', [$this->response, 60]);
+        \Varnishable::setCacheDuration(60);
+        $this->invokeMethod($this->service, 'addCacheableHeader', [$this->response]);
 
         $cacheable = $this->response->headers->get(\Varnishable::getConfig('cacheable_header'));
         $cacheControl = $this->response->headers->get('Cache-Control');
@@ -96,7 +97,8 @@ class ManipulateHttpResponseTests extends TestCase
         $expected = [300, 900, 1800, 3600];
 
         for ($i=0; $i<count($data); $i++) {
-            $actual = $this->invokeMethod($this->service, 'getCacheDuration', [$data[$i]]);
+            \Varnishable::setCacheDuration($data[$i]);
+            $actual = $this->invokeMethod($this->service, 'getCacheDuration');
 
             $this->assertEquals($expected[$i], $actual);
         }
@@ -105,12 +107,13 @@ class ManipulateHttpResponseTests extends TestCase
     /** @test */
     public function it_can_fully_manipulate_http_response_as_expected()
     {
+        \Varnishable::setCacheDuration(120);
         $this->headers->set(\Varnishable::getConfig('esi_capability_header'), 'v1.0');
         $this->response->header(\Varnishable::getConfig('cacheable_header'), '1');
 
         $this->service->setRequestHeaders($this->headers);
 
-        $this->service->manipulate($this->response, 120);
+        $this->service->manipulate($this->response);
 
         $actual = $this->response->headers->get(\Varnishable::getConfig('esi_reply_header'));
         $this->assertEquals('v1.0', $actual);

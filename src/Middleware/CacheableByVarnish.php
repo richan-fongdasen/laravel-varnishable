@@ -19,8 +19,12 @@ class CacheableByVarnish
     {
         \Varnishable::setRequestHeaders($request->headers);
 
+        if ((int) $cacheDuration > 0) {
+            \Varnishable::setCacheDuration($cacheDuration);
+        }
+
         $response = $next($request);
 
-        return \Varnishable::manipulate($response, $cacheDuration);
+        return \Varnishable::manipulate($response);
     }
 }
