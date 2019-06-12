@@ -26,7 +26,11 @@ class ServiceProvider extends Provider
      */
     public function register() :void
     {
-        $this->mergeConfigFrom(realpath(dirname(__DIR__).'/config/varnishable.php'), 'varnishable');
+        $configPath = realpath(dirname(__DIR__).'/config/varnishable.php');
+
+        if ($configPath !== false) {
+            $this->mergeConfigFrom($configPath, 'varnishable');
+        }
 
         $this->app->singleton(VarnishableService::class, function () {
             return new VarnishableService(new Client());

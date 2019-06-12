@@ -4,6 +4,7 @@ namespace RichanFongdasen\Varnishable\Concerns;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use InvalidArgumentException;
 
 trait InvalidateVarnishCache
 {
@@ -15,8 +16,9 @@ trait InvalidateVarnishCache
      * @return void
      *
      * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    public function flush($hostname) :void
+    public function flush(string $hostname) :void
     {
         $this->sendBanRequest([
             'X-Ban-Host' => $hostname,
@@ -25,55 +27,79 @@ trait InvalidateVarnishCache
 
     /**
      * Generate ban request for an application hostname,
-     * specified by a set of regular expression.
+     * specified by a regular expression.
      *
-     * @param string       $hostname
-     * @param string|array $patterns
+     * @param string $hostname
+     * @param string $pattern
      *
      * @return void
      *
      * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    public function banByPatterns($hostname, $patterns) :void
+    public function banByPattern(string $hostname, string $pattern) :void
     {
-        if (!is_array($patterns)) {
-            $this->sendBanRequest([
-                'X-Ban-Host'  => $hostname,
-                'X-Ban-Regex' => $patterns,
-            ]);
+        $this->sendBanRequest([
+            'X-Ban-Host'  => $hostname,
+            'X-Ban-Regex' => $pattern,
+        ]);
+    }
 
-            return;
-        }
-
+    /**
+     * Generate ban request for an application hostname,
+     * specified by a set of regular expression.
+     *
+     * @param string $hostname
+     * @param array  $patterns
+     *
+     * @return void
+     *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     */
+    public function banByPatterns(string $hostname, array $patterns) :void
+    {
         foreach ($patterns as $pattern) {
-            $this->banByPatterns($hostname, $pattern);
+            $this->banByPattern($hostname, $pattern);
         }
+    }
+
+    /**
+     * Generate ban request for an application hostname,
+     * specified by a single urls.
+     *
+     * @param string $hostname
+     * @param string $url
+     *
+     * @return void
+     *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     */
+    public function banByUrl(string $hostname, string $url) :void
+    {
+        $this->sendBanRequest([
+            'X-Ban-Host' => $hostname,
+            'X-Ban-Url'  => $url,
+        ]);
     }
 
     /**
      * Generate ban request for an application hostname,
      * specified by a set of urls.
      *
-     * @param string       $hostname
-     * @param string|array $urls
+     * @param string $hostname
+     * @param array  $urls
      *
      * @return void
      *
      * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    public function banByUrls($hostname, $urls) :void
+    public function banByUrls(string $hostname, array $urls) :void
     {
-        if (!is_array($urls)) {
-            $this->sendBanRequest([
-                'X-Ban-Host' => $hostname,
-                'X-Ban-Url'  => $urls,
-            ]);
-
-            return;
-        }
-
         foreach ($urls as $url) {
-            $this->banByUrls($hostname, $url);
+            $this->banByUrl($hostname, $url);
         }
     }
 
@@ -85,7 +111,7 @@ trait InvalidateVarnishCache
      *
      * @return string
      */
-    protected function getVarnishUrl($varnishHost) :string
+    protected function getVarnishUrl(string $varnishHost) :string
     {
         return 'http://'.$varnishHost.':'.$this->getConfig('varnish_port').'/';
     }
@@ -99,8 +125,9 @@ trait InvalidateVarnishCache
      * @return void
      *
      * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    protected function sendBanRequest(array $headers, $method = 'BAN')
+    protected function sendBanRequest(array $headers, string $method = 'BAN') :void
     {
         $guzzle = $this->getGuzzle();
 

@@ -24,9 +24,9 @@ trait ManipulateHttpResponse
      */
     protected function acknowledgeEsiSupport(Response $response) :void
     {
-        $esiHeader = $this->getConfig('esi_capability_header');
+        $esiHeader = $this->requestHeaders->get($this->getConfig('esi_capability_header'));
 
-        if ($esiHeader = $this->requestHeaders->get($esiHeader)) {
+        if ($esiHeader !== null) {
             $response->headers->set($this->getConfig('esi_reply_header'), $esiHeader);
         }
     }
@@ -53,10 +53,11 @@ trait ManipulateHttpResponse
      * the response as an uncacheable content.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
+     * @return void
      */
-    public function addUncacheableHeader(Response $response)
+    public function addUncacheableHeader(Response $response) :void
     {
-        return $response->headers->set($this->getConfig('uncacheable_header'), '1');
+        $response->headers->set($this->getConfig('uncacheable_header'), '1');
     }
 
     /**
@@ -99,9 +100,9 @@ trait ManipulateHttpResponse
      * @param int $duration [Cache duration value in minutes]
      * @return void
      */
-    public function setCacheDuration($duration) :void
+    public function setCacheDuration(int $duration) :void
     {
-        $this->setConfig('cache_duration', (int) $duration);
+        $this->setConfig('cache_duration', $duration);
     }
 
     /**
@@ -120,11 +121,12 @@ trait ManipulateHttpResponse
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
      *
-     * @return string|array
+     * @return bool
      */
-    protected function shouldNotCache(Response $response)
+    protected function shouldNotCache(Response $response) :bool
     {
-        return $response->headers->get($this->getConfig('uncacheable_header'));
+        $headers = (array) $response->headers->get($this->getConfig('uncacheable_header'));
+        return (count($headers) > 0);
     }
 
     /**

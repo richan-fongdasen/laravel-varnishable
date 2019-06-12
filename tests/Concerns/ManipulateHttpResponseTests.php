@@ -154,6 +154,6 @@ class ManipulateHttpResponseTests extends TestCase
         $cacheable = $this->invokeMethod($this->service, 'shouldNotCache', [$cacheableResponse]);
 
         $this->assertEquals('1', $uncacheable);
-        $this->assertNull($cacheable);
+        $this->assertFalse($cacheable);
     }
 }

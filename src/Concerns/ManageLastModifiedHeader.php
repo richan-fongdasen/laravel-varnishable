@@ -26,7 +26,7 @@ trait ManageLastModifiedHeader
     {
         $lastModified = $this->getLastModifiedHeader();
 
-        if ($this->getConfig('use_last_modified') && ($lastModified !== null)) {
+        if ((bool) $this->getConfig('use_last_modified') && ($lastModified !== null)) {
             $response->setLastModified($lastModified);
         }
     }

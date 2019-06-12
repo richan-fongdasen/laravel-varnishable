@@ -15,7 +15,7 @@ trait ManageEtagHeader
      */
     protected function addEtagHeader(Response $response) :void
     {
-        if ($this->getConfig('use_etag')) {
+        if ((bool) $this->getConfig('use_etag')) {
             $response->setEtag(md5($response->getContent()));
         }
     }

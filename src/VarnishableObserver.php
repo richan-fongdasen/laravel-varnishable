@@ -29,7 +29,9 @@ class VarnishableObserver
      */
     protected function handleModelInitialization(Model $model) :void
     {
-        if ($updatedAt = $model->getAttribute('updated_at')) {
+        $updatedAt = $model->getAttribute('updated_at');
+
+        if ($updatedAt !== null) {
             \Varnishable::setLastModifiedHeader($updatedAt);
         }
     }
