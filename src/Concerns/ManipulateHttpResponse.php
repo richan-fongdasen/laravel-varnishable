@@ -22,7 +22,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    protected function acknowledgeEsiSupport(Response $response)
+    protected function acknowledgeEsiSupport(Response $response) :void
     {
         $esiHeader = $this->getConfig('esi_capability_header');
 
@@ -36,8 +36,9 @@ trait ManipulateHttpResponse
      * the response as a cacheable content.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function addCacheableHeader(Response $response)
+    protected function addCacheableHeader(Response $response) :Response
     {
         $duration = $this->getCacheDuration();
 
@@ -76,7 +77,7 @@ trait ManipulateHttpResponse
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function manipulate(Response $response)
+    public function manipulate(Response $response) :Response
     {
         $this->acknowledgeEsiSupport($response);
 
@@ -96,8 +97,9 @@ trait ManipulateHttpResponse
      * be added to the HTTP response's Cache-Control header.
      *
      * @param int $duration [Cache duration value in minutes]
+     * @return void
      */
-    public function setCacheDuration($duration)
+    public function setCacheDuration($duration) :void
     {
         $this->setConfig('cache_duration', (int) $duration);
     }
@@ -106,8 +108,9 @@ trait ManipulateHttpResponse
      * Set the current Http request headers.
      *
      * @param \Symfony\Component\HttpFoundation\HeaderBag $headers
+     * @return void
      */
-    public function setRequestHeaders(HeaderBag $headers)
+    public function setRequestHeaders(HeaderBag $headers) :void
     {
         $this->requestHeaders = $headers;
     }
@@ -131,7 +134,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract protected function addEtagHeader(Response $response);
+    abstract protected function addEtagHeader(Response $response) :void;
 
     /**
      * Add Last-Modified header to the current response.
@@ -140,7 +143,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract protected function addLastModifiedHeader(Response $response);
+    abstract protected function addLastModifiedHeader(Response $response) :void;
 
     /**
      * Get configuration value for a specific key.
@@ -159,5 +162,5 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract public function setConfig($key, $value);
+    abstract public function setConfig($key, $value) :void;
 }

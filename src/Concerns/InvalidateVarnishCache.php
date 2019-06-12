@@ -2,6 +2,9 @@
 
 namespace RichanFongdasen\Varnishable\Concerns;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
 trait InvalidateVarnishCache
 {
     /**
@@ -10,8 +13,10 @@ trait InvalidateVarnishCache
      * @param string $hostname
      *
      * @return void
+     *
+     * @throws GuzzleException
      */
-    public function flush($hostname)
+    public function flush($hostname) :void
     {
         $this->sendBanRequest([
             'X-Ban-Host' => $hostname,
@@ -26,14 +31,18 @@ trait InvalidateVarnishCache
      * @param string|array $patterns
      *
      * @return void
+     *
+     * @throws GuzzleException
      */
-    public function banByPatterns($hostname, $patterns)
+    public function banByPatterns($hostname, $patterns) :void
     {
         if (!is_array($patterns)) {
-            return $this->sendBanRequest([
+            $this->sendBanRequest([
                 'X-Ban-Host'  => $hostname,
                 'X-Ban-Regex' => $patterns,
             ]);
+
+            return;
         }
 
         foreach ($patterns as $pattern) {
@@ -49,14 +58,18 @@ trait InvalidateVarnishCache
      * @param string|array $urls
      *
      * @return void
+     *
+     * @throws GuzzleException
      */
-    public function banByUrls($hostname, $urls)
+    public function banByUrls($hostname, $urls) :void
     {
         if (!is_array($urls)) {
-            return $this->sendBanRequest([
+            $this->sendBanRequest([
                 'X-Ban-Host' => $hostname,
                 'X-Ban-Url'  => $urls,
             ]);
+
+            return;
         }
 
         foreach ($urls as $url) {
@@ -72,7 +85,7 @@ trait InvalidateVarnishCache
      *
      * @return string
      */
-    protected function getVarnishUrl($varnishHost)
+    protected function getVarnishUrl($varnishHost) :string
     {
         return 'http://'.$varnishHost.':'.$this->getConfig('varnish_port').'/';
     }
@@ -84,6 +97,8 @@ trait InvalidateVarnishCache
      * @param string $method
      *
      * @return void
+     *
+     * @throws GuzzleException
      */
     protected function sendBanRequest(array $headers, $method = 'BAN')
     {
@@ -110,5 +125,5 @@ trait InvalidateVarnishCache
      *
      * @return \GuzzleHttp\Client
      */
-    abstract public function getGuzzle();
+    abstract public function getGuzzle() :Client;
 }

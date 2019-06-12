@@ -3,6 +3,7 @@
 namespace RichanFongdasen\Varnishable\Concerns;
 
 use Carbon\Carbon;
+use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 trait ManageLastModifiedHeader
@@ -21,7 +22,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    protected function addLastModifiedHeader(Response $response)
+    protected function addLastModifiedHeader(Response $response) :void
     {
         $lastModified = $this->getLastModifiedHeader();
 
@@ -35,7 +36,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    public function disableLastModified()
+    public function disableLastModified() :void
     {
         $this->setConfig('use_last_modified', false);
     }
@@ -45,7 +46,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    public function enableLastModified()
+    public function enableLastModified() :void
     {
         $this->setConfig('use_last_modified', true);
     }
@@ -55,7 +56,7 @@ trait ManageLastModifiedHeader
      *
      * @return \Carbon\Carbon|null
      */
-    public function getLastModifiedHeader()
+    public function getLastModifiedHeader() :?Carbon
     {
         return $this->lastModified;
     }
@@ -64,8 +65,11 @@ trait ManageLastModifiedHeader
      * Set last modified header for the current response.
      *
      * @param \Carbon\Carbon|string $current
+     * @return void
+     *
+     * @throws Exception
      */
-    public function setLastModifiedHeader($current)
+    public function setLastModifiedHeader($current) :void
     {
         if (!($current instanceof Carbon)) {
             $current = new Carbon($current);
@@ -93,5 +97,5 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    abstract public function setConfig($key, $value);
+    abstract public function setConfig($key, $value) :void;
 }

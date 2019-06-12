@@ -12,6 +12,7 @@ class CacheableByVarnish
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Closure                                  $next
+     * @param int|null                                  $cacheDuration
      *
      * @return mixed
      */

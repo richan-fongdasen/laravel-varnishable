@@ -31,7 +31,7 @@ class ModelHasUpdated
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function model()
+    public function model() :Model
     {
         return $this->model;
     }
