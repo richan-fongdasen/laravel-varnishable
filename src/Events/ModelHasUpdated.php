@@ -88,7 +88,9 @@ class ModelHasUpdated
      */
     public function model()
     {
-        return $this->retrieveModel() ?? $this->createDirtyModel();
+        $model = $this->retrieveModel();
+
+        return ($model !== null) ? $model : $this->createDirtyModel();
     }
 
     /**
