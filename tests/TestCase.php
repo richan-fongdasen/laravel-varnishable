@@ -3,7 +3,6 @@
 namespace RichanFongdasen\Varnishable\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTest;
-use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
 
 abstract class TestCase extends BaseTest
 {

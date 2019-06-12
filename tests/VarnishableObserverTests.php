@@ -4,14 +4,17 @@ namespace RichanFongdasen\Varnishable\Tests;
 
 use Carbon\Carbon;
 use RichanFongdasen\Varnishable\Events\ModelHasUpdated;
+use RichanFongdasen\Varnishable\Tests\Supports\Models\Post;
 use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
 
 class VarnishableObserverTests extends TestCase
 {
     /**
      * Setup the test environment
+     *
+     * @return void
      */
-    public function setUp()
+    public function setUp() :void
     {
         parent::setUp();
 
@@ -23,7 +26,7 @@ class VarnishableObserverTests extends TestCase
     {
         $this->expectsEvents(ModelHasUpdated::class);
 
-        $user = factory(User::class)->create();
+        factory(User::class)->create();
     }
 
     /** @test */
@@ -67,7 +70,7 @@ class VarnishableObserverTests extends TestCase
         app('events')->listen('eloquent.retrieved:*', function () {
             $args = (array) func_get_args();
 
-            $model = (count($args) == 2) && is_array($args[1]) ? $args[1][0] : $args[0];
+            $model = (count($args) === 2) && is_array($args[1]) ? $args[1][0] : $args[0];
 
             $this->assertInstanceOf(User::class, $model);
             $this->assertEquals(6, $model->getKey());
@@ -82,7 +85,7 @@ class VarnishableObserverTests extends TestCase
         app('events')->listen('eloquent.wakeup:*', function () {
             $args = (array) func_get_args();
 
-            $model = (count($args) == 2) && is_array($args[1]) ? $args[1][0] : $args[0];
+            $model = (count($args) === 2) && is_array($args[1]) ? $args[1][0] : $args[0];
 
             $this->assertInstanceOf(User::class, $model);
             $this->assertEquals(6, $model->getKey());
@@ -91,7 +94,7 @@ class VarnishableObserverTests extends TestCase
         $user = User::find(6);
 
         $serialized = serialize($user);
-        $newUser = unserialize($serialized);
+        unserialize($serialized);
     }
 
     /** @test */
@@ -115,5 +118,48 @@ class VarnishableObserverTests extends TestCase
         $actual = \Varnishable::getLastModifiedHeader();
 
         $this->assertNull($actual);
+    }
+
+    /** @test */
+    public function serialized_events_can_be_unserialized_without_any_errors_with_soft_deleted_model()
+    {
+        $user = User::find(6);
+        $event = new ModelHasUpdated($user);
+        $user->delete();
+
+        $serializedEvent = serialize($event);
+        $event = unserialize($serializedEvent);
+
+        $this->assertInstanceOf(ModelHasUpdated::class, $event);
+
+        $event->model();
+        $model = $event->model();
+
+        $this->assertInstanceOf(User::class, $model);
+        $this->assertEquals(6, $model->getKey());
+        $this->assertTrue($model->exists);
+        $this->assertCount(0, $model->getDirty());
+    }
+
+    /** @test */
+    public function serialized_events_can_be_unserialized_without_any_errors_with_deleted_model()
+    {
+        factory(Post::class, 10)->create();
+
+        $post = Post::find(8);
+        $event = new ModelHasUpdated($post);
+        $post->delete();
+
+        $serializedEvent = serialize($event);
+        $event = unserialize($serializedEvent);
+
+        $this->assertInstanceOf(ModelHasUpdated::class, $event);
+
+        $model = $event->model();
+
+        $this->assertInstanceOf(Post::class, $model);
+        $this->assertEquals(8, $model->getKey());
+        $this->assertFalse($model->exists);
+        $this->assertCount(4, $model->getDirty());
     }
 }
