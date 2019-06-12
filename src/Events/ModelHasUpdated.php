@@ -66,6 +66,7 @@ class ModelHasUpdated
      * the given eloquent model.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function getQuery(Model $model) :Builder
