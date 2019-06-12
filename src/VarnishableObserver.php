@@ -14,7 +14,7 @@ class VarnishableObserver
      *
      * @return void
      */
-    public function deleted(Model $model)
+    public function deleted(Model $model) :void
     {
         $this->handleModelUpdates($model);
     }
@@ -27,9 +27,11 @@ class VarnishableObserver
      *
      * @return void
      */
-    protected function handleModelInitialization(Model $model)
+    protected function handleModelInitialization(Model $model) :void
     {
-        if ($updatedAt = $model->getAttribute('updated_at')) {
+        $updatedAt = $model->getAttribute('updated_at');
+
+        if ($updatedAt !== null) {
             \Varnishable::setLastModifiedHeader($updatedAt);
         }
     }
@@ -41,7 +43,7 @@ class VarnishableObserver
      *
      * @return void
      */
-    protected function handleModelUpdates(Model $model)
+    protected function handleModelUpdates(Model $model) :void
     {
         event(new ModelHasUpdated($model));
     }
@@ -53,7 +55,7 @@ class VarnishableObserver
      *
      * @return void
      */
-    public function restored(Model $model)
+    public function restored(Model $model) :void
     {
         $this->handleModelUpdates($model);
     }
@@ -65,7 +67,7 @@ class VarnishableObserver
      *
      * @return void
      */
-    public function retrieved(Model $model)
+    public function retrieved(Model $model) :void
     {
         $this->handleModelInitialization($model);
     }
@@ -77,7 +79,7 @@ class VarnishableObserver
      *
      * @return void
      */
-    public function saved(Model $model)
+    public function saved(Model $model) :void
     {
         $this->handleModelUpdates($model);
     }
@@ -89,7 +91,7 @@ class VarnishableObserver
      *
      * @return void
      */
-    public function wakeup(Model $model)
+    public function wakeup(Model $model) :void
     {
         $this->handleModelInitialization($model);
     }

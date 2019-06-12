@@ -12,10 +12,10 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public function boot()
+    public function boot() :void
     {
         $this->publishes([
-            realpath(__DIR__.'/../config/varnishable.php') => config_path('varnishable.php'),
+            realpath(dirname(__DIR__).'/config/varnishable.php') => config_path('varnishable.php'),
         ], 'config');
     }
 
@@ -24,9 +24,13 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public function register()
+    public function register() :void
     {
-        $this->mergeConfigFrom(realpath(__DIR__.'/../config/varnishable.php'), 'varnishable');
+        $configPath = realpath(dirname(__DIR__).'/config/varnishable.php');
+
+        if ($configPath !== false) {
+            $this->mergeConfigFrom($configPath, 'varnishable');
+        }
 
         $this->app->singleton(VarnishableService::class, function () {
             return new VarnishableService(new Client());

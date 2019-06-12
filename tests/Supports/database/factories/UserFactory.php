@@ -1,9 +1,9 @@
 <?php
 
-$userClass = \RichanFongdasen\Varnishable\Tests\Supports\Models\User::class;
+use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
 
-$factory->define($userClass, function (\Faker\Generator $faker) {
-    $time = rand(1483203600, 1530378000);
+$factory->define(User::class, function (\Faker\Generator $faker) {
+    $time = random_int(1483203600, 1530378000);
     
     return [
         'name' => $faker->name,
