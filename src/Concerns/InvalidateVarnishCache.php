@@ -13,10 +13,10 @@ trait InvalidateVarnishCache
      *
      * @param string $hostname
      *
-     * @return void
-     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function flush(string $hostname) :void
     {
@@ -32,10 +32,10 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param string $pattern
      *
-     * @return void
-     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function banByPattern(string $hostname, string $pattern) :void
     {
@@ -52,10 +52,10 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param array  $patterns
      *
-     * @return void
-     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function banByPatterns(string $hostname, array $patterns) :void
     {
@@ -71,10 +71,10 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param string $url
      *
-     * @return void
-     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function banByUrl(string $hostname, string $url) :void
     {
@@ -91,10 +91,10 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param array  $urls
      *
-     * @return void
-     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function banByUrls(string $hostname, array $urls) :void
     {
@@ -122,10 +122,10 @@ trait InvalidateVarnishCache
      * @param array  $headers
      * @param string $method
      *
-     * @return void
-     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function sendBanRequest(array $headers, string $method = 'BAN') :void
     {
