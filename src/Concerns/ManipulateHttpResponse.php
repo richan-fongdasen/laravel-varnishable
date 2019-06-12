@@ -36,6 +36,7 @@ trait ManipulateHttpResponse
      * the response as a cacheable content.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function addCacheableHeader(Response $response) :Response
@@ -53,6 +54,7 @@ trait ManipulateHttpResponse
      * the response as an uncacheable content.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
+     *
      * @return void
      */
     public function addUncacheableHeader(Response $response) :void
@@ -98,6 +100,7 @@ trait ManipulateHttpResponse
      * be added to the HTTP response's Cache-Control header.
      *
      * @param int $duration [Cache duration value in minutes]
+     *
      * @return void
      */
     public function setCacheDuration(int $duration) :void
@@ -109,6 +112,7 @@ trait ManipulateHttpResponse
      * Set the current Http request headers.
      *
      * @param \Symfony\Component\HttpFoundation\HeaderBag $headers
+     *
      * @return void
      */
     public function setRequestHeaders(HeaderBag $headers) :void
@@ -126,7 +130,8 @@ trait ManipulateHttpResponse
     protected function shouldNotCache(Response $response) :bool
     {
         $headers = (array) $response->headers->get($this->getConfig('uncacheable_header'));
-        return (count($headers) > 0);
+
+        return count($headers) > 0;
     }
 
     /**

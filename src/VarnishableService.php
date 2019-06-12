@@ -94,6 +94,7 @@ class VarnishableService
      * a new one.
      *
      * @param \GuzzleHttp\Client $guzzle
+     *
      * @return void
      */
     public function setGuzzle(Client $guzzle) :void

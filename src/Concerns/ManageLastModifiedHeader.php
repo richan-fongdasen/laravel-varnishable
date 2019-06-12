@@ -65,9 +65,10 @@ trait ManageLastModifiedHeader
      * Set last modified header for the current response.
      *
      * @param \Carbon\Carbon|string $current
-     * @return void
      *
      * @throws Exception
+     *
+     * @return void
      */
     public function setLastModifiedHeader($current) :void
     {
