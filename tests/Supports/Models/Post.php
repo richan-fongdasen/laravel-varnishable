@@ -2,12 +2,10 @@
 
 namespace RichanFongdasen\Varnishable\Tests\Supports\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use RichanFongdasen\Varnishable\Model\Concerns\Varnishable;
 
-class User extends AbstractModel
+class Post extends AbstractModel
 {
-    use SoftDeletes;
     use Varnishable;
 
     /**
@@ -16,8 +14,8 @@ class User extends AbstractModel
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password'
+        'title',
+        'description',
+        'content'
     ];
 }
