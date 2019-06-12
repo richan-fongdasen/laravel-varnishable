@@ -19,6 +19,14 @@ Vagrantfile
 *.log
 
 
+# Code Editor / IDE generated files
+# ----------------------------------------------------------------------- #
+
+.idea
+*.sublime-project
+*.sublime-workspace
+
+
 # Composer & Vendor Files
 # ----------------------------------------------------------------------- #
 
@@ -26,4 +34,9 @@ composer.phar
 composer.lock
 /vendor
 
+
+# Cache Files
+# ----------------------------------------------------------------------- #
+
+*.cache
 
