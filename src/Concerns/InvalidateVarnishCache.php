@@ -2,9 +2,8 @@
 
 namespace RichanFongdasen\Varnishable\Concerns;
 
+use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use InvalidArgumentException;
 
 trait InvalidateVarnishCache
 {
@@ -13,8 +12,7 @@ trait InvalidateVarnishCache
      *
      * @param string $hostname
      *
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @return void
      */
@@ -32,8 +30,7 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param string $pattern
      *
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @return void
      */
@@ -52,8 +49,7 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param array  $patterns
      *
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @return void
      */
@@ -71,8 +67,7 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param string $url
      *
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @return void
      */
@@ -91,8 +86,7 @@ trait InvalidateVarnishCache
      * @param string $hostname
      * @param array  $urls
      *
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @return void
      */
@@ -122,8 +116,7 @@ trait InvalidateVarnishCache
      * @param array  $headers
      * @param string $method
      *
-     * @throws GuzzleException
-     * @throws InvalidArgumentException
+     * @throws Exception
      *
      * @return void
      */
