@@ -41,9 +41,9 @@ class VarnishableObserver
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     protected function handleModelInitialization(Model $model) :void
     {
