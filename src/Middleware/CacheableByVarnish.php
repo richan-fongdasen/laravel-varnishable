@@ -3,29 +3,45 @@
 namespace RichanFongdasen\Varnishable\Middleware;
 
 use Closure;
+use RichanFongdasen\Varnishable\VarnishableService;
 use Symfony\Component\HttpFoundation\Request;
 
 class CacheableByVarnish
 {
     /**
+     * Varnishable Service Object.
+     *
+     * @var \RichanFongdasen\Varnishable\VarnishableService
+     */
+    protected $varnishable;
+
+    /**
+     * CacheableByVarnish Middleware constructor.
+     */
+    public function __construct()
+    {
+        $this->varnishable = app(VarnishableService::class);
+    }
+
+    /**
      * Handle an incoming request.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Closure                                  $next
-     * @param int|null                                  $cacheDuration
+     * @param int                                       $cacheDuration
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, $cacheDuration = null)
+    public function handle(Request $request, Closure $next, int $cacheDuration = 0)
     {
-        \Varnishable::setRequestHeaders($request->headers);
+        $this->varnishable->setRequestHeaders($request->headers);
 
-        if ((int) $cacheDuration > 0) {
-            \Varnishable::setCacheDuration($cacheDuration);
+        if ($cacheDuration > 0) {
+            $this->varnishable->setCacheDuration($cacheDuration);
         }
 
         $response = $next($request);
 
-        return \Varnishable::manipulate($response);
+        return $this->varnishable->manipulate($response);
     }
 }

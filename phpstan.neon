@@ -5,5 +5,5 @@ includes:
 parameters:
     level: 7
     ignoreErrors:
-        - '#Call to static method [a-zA-Z0-9\\_]+\(\) on an unknown class Varnishable.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withTrashed().#'
 

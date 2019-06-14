@@ -22,7 +22,7 @@ class ModelHasUpdated
     /**
      * Eloquent model object.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var mixed
      */
     protected $model;
 
@@ -108,6 +108,6 @@ class ModelHasUpdated
 
         $this->model = $this->getQuery($model)->find(data_get($this->data, $model->getKeyName()));
 
-        return $this->model;
+        return ($this->model instanceof Model) ? $this->model : null;
     }
 }
