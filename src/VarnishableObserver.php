@@ -2,11 +2,27 @@
 
 namespace RichanFongdasen\Varnishable;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use RichanFongdasen\Varnishable\Events\ModelHasUpdated;
 
 class VarnishableObserver
 {
+    /**
+     * Varnishable Service Object.
+     *
+     * @var \RichanFongdasen\Varnishable\VarnishableService
+     */
+    protected $varnishable;
+
+    /**
+     * Varnishable Observer constructor.
+     */
+    public function __construct()
+    {
+        $this->varnishable = app(VarnishableService::class);
+    }
+
     /**
      * Listening to any saved events.
      *
@@ -26,13 +42,15 @@ class VarnishableObserver
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return void
+     *
+     * @throws Exception
      */
     protected function handleModelInitialization(Model $model) :void
     {
         $updatedAt = $model->getAttribute('updated_at');
 
         if ($updatedAt !== null) {
-            \Varnishable::setLastModifiedHeader($updatedAt);
+            $this->varnishable->setLastModifiedHeader($updatedAt);
         }
     }
 
