@@ -29,7 +29,7 @@ class UncacheableByVarnish
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Closure                                  $next
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next)
     {

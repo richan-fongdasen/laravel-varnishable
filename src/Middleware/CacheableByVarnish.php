@@ -30,7 +30,7 @@ class CacheableByVarnish
      * @param \Closure                                  $next
      * @param int                                       $cacheDuration
      *
-     * @return mixed
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next, int $cacheDuration = 0)
     {
