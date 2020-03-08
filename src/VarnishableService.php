@@ -61,7 +61,7 @@ class VarnishableService
      *
      * @return \GuzzleHttp\Client
      */
-    public function getGuzzle() :Client
+    public function getGuzzle(): Client
     {
         return $this->guzzle;
     }
@@ -71,7 +71,7 @@ class VarnishableService
      *
      * @return void
      */
-    public function loadConfig() :void
+    public function loadConfig(): void
     {
         $this->config = app('config')->get('varnishable');
     }
@@ -84,7 +84,7 @@ class VarnishableService
      *
      * @return void
      */
-    public function setConfig($key, $value) :void
+    public function setConfig($key, $value): void
     {
         $this->config[$key] = $value;
     }
@@ -97,7 +97,7 @@ class VarnishableService
      *
      * @return void
      */
-    public function setGuzzle(Client $guzzle) :void
+    public function setGuzzle(Client $guzzle): void
     {
         $this->guzzle = $guzzle;
     }

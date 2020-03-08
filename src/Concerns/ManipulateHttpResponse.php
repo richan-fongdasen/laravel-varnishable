@@ -22,7 +22,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    protected function acknowledgeEsiSupport(Response $response) :void
+    protected function acknowledgeEsiSupport(Response $response): void
     {
         $esiHeader = $this->requestHeaders->get($this->getConfig('esi_capability_header'));
 
@@ -39,7 +39,7 @@ trait ManipulateHttpResponse
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function addCacheableHeader(Response $response) :Response
+    protected function addCacheableHeader(Response $response): Response
     {
         $duration = $this->getCacheDuration();
 
@@ -57,7 +57,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    public function addUncacheableHeader(Response $response) :void
+    public function addUncacheableHeader(Response $response): void
     {
         $response->headers->set($this->getConfig('uncacheable_header'), '1');
     }
@@ -80,7 +80,7 @@ trait ManipulateHttpResponse
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function manipulate(Response $response) :Response
+    public function manipulate(Response $response): Response
     {
         $this->acknowledgeEsiSupport($response);
 
@@ -103,7 +103,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    public function setCacheDuration(int $duration) :void
+    public function setCacheDuration(int $duration): void
     {
         $this->setConfig('cache_duration', $duration);
     }
@@ -115,7 +115,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    public function setRequestHeaders(HeaderBag $headers) :void
+    public function setRequestHeaders(HeaderBag $headers): void
     {
         $this->requestHeaders = $headers;
     }
@@ -127,7 +127,7 @@ trait ManipulateHttpResponse
      *
      * @return bool
      */
-    protected function shouldNotCache(Response $response) :bool
+    protected function shouldNotCache(Response $response): bool
     {
         $headers = (array) $response->headers->get($this->getConfig('uncacheable_header'));
 
@@ -141,7 +141,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract protected function addEtagHeader(Response $response) :void;
+    abstract protected function addEtagHeader(Response $response): void;
 
     /**
      * Add Last-Modified header to the current response.
@@ -150,7 +150,7 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract protected function addLastModifiedHeader(Response $response) :void;
+    abstract protected function addLastModifiedHeader(Response $response): void;
 
     /**
      * Get configuration value for a specific key.
@@ -169,5 +169,5 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract public function setConfig($key, $value) :void;
+    abstract public function setConfig($key, $value): void;
 }

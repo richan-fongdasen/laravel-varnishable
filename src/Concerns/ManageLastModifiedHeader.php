@@ -22,7 +22,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    protected function addLastModifiedHeader(Response $response) :void
+    protected function addLastModifiedHeader(Response $response): void
     {
         $lastModified = $this->getLastModifiedHeader();
 
@@ -36,7 +36,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    public function disableLastModified() :void
+    public function disableLastModified(): void
     {
         $this->setConfig('use_last_modified', false);
     }
@@ -46,7 +46,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    public function enableLastModified() :void
+    public function enableLastModified(): void
     {
         $this->setConfig('use_last_modified', true);
     }
@@ -56,7 +56,7 @@ trait ManageLastModifiedHeader
      *
      * @return \Carbon\Carbon|null
      */
-    public function getLastModifiedHeader() :?Carbon
+    public function getLastModifiedHeader(): ?Carbon
     {
         return $this->lastModified;
     }
@@ -70,7 +70,7 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    public function setLastModifiedHeader($current) :void
+    public function setLastModifiedHeader($current): void
     {
         if (!($current instanceof Carbon)) {
             $current = new Carbon($current);
@@ -98,5 +98,5 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    abstract public function setConfig($key, $value) :void;
+    abstract public function setConfig($key, $value): void;
 }
