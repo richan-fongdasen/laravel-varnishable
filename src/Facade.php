@@ -11,7 +11,7 @@ class Facade extends BaseFacade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() :string
+    protected static function getFacadeAccessor(): string
     {
         return VarnishableService::class;
     }

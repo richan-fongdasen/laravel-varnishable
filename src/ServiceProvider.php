@@ -12,7 +12,7 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public function boot() :void
+    public function boot(): void
     {
         $this->publishes([
             realpath(dirname(__DIR__).'/config/varnishable.php') => config_path('varnishable.php'),
@@ -24,7 +24,7 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public function register() :void
+    public function register(): void
     {
         $configPath = realpath(dirname(__DIR__).'/config/varnishable.php');
 

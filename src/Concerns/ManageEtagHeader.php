@@ -13,7 +13,7 @@ trait ManageEtagHeader
      *
      * @return void
      */
-    protected function addEtagHeader(Response $response) :void
+    protected function addEtagHeader(Response $response): void
     {
         $useEtag = (bool) $this->getConfig('use_etag');
         $content = $response->getContent();
@@ -28,7 +28,7 @@ trait ManageEtagHeader
      *
      * @return void
      */
-    public function disableEtag() :void
+    public function disableEtag(): void
     {
         $this->setConfig('use_etag', false);
     }
@@ -38,7 +38,7 @@ trait ManageEtagHeader
      *
      * @return void
      */
-    public function enableEtag() :void
+    public function enableEtag(): void
     {
         $this->setConfig('use_etag', true);
     }
@@ -60,5 +60,5 @@ trait ManageEtagHeader
      *
      * @return void
      */
-    abstract public function setConfig($key, $value) :void;
+    abstract public function setConfig($key, $value): void;
 }
