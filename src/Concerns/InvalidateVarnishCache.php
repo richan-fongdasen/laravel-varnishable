@@ -16,7 +16,7 @@ trait InvalidateVarnishCache
      *
      * @return void
      */
-    public function flush(string $hostname) :void
+    public function flush(string $hostname): void
     {
         $this->sendBanRequest([
             'X-Ban-Host' => $hostname,
@@ -34,7 +34,7 @@ trait InvalidateVarnishCache
      *
      * @return void
      */
-    public function banByPattern(string $hostname, string $pattern) :void
+    public function banByPattern(string $hostname, string $pattern): void
     {
         $this->sendBanRequest([
             'X-Ban-Host'  => $hostname,
@@ -53,7 +53,7 @@ trait InvalidateVarnishCache
      *
      * @return void
      */
-    public function banByPatterns(string $hostname, array $patterns) :void
+    public function banByPatterns(string $hostname, array $patterns): void
     {
         foreach ($patterns as $pattern) {
             $this->banByPattern($hostname, $pattern);
@@ -71,7 +71,7 @@ trait InvalidateVarnishCache
      *
      * @return void
      */
-    public function banByUrl(string $hostname, string $url) :void
+    public function banByUrl(string $hostname, string $url): void
     {
         $this->sendBanRequest([
             'X-Ban-Host' => $hostname,
@@ -90,7 +90,7 @@ trait InvalidateVarnishCache
      *
      * @return void
      */
-    public function banByUrls(string $hostname, array $urls) :void
+    public function banByUrls(string $hostname, array $urls): void
     {
         foreach ($urls as $url) {
             $this->banByUrl($hostname, $url);
@@ -105,7 +105,7 @@ trait InvalidateVarnishCache
      *
      * @return string
      */
-    protected function getVarnishUrl(string $varnishHost) :string
+    protected function getVarnishUrl(string $varnishHost): string
     {
         return 'http://'.$varnishHost.':'.$this->getConfig('varnish_port').'/';
     }
@@ -120,7 +120,7 @@ trait InvalidateVarnishCache
      *
      * @return void
      */
-    protected function sendBanRequest(array $headers, string $method = 'BAN') :void
+    protected function sendBanRequest(array $headers, string $method = 'BAN'): void
     {
         $guzzle = $this->getGuzzle();
 
@@ -145,5 +145,5 @@ trait InvalidateVarnishCache
      *
      * @return \GuzzleHttp\Client
      */
-    abstract public function getGuzzle() :Client;
+    abstract public function getGuzzle(): Client;
 }

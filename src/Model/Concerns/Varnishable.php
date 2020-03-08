@@ -12,7 +12,7 @@ trait Varnishable
      *
      * @return void
      */
-    public static function bootVarnishable() :void
+    public static function bootVarnishable(): void
     {
         static::observe(app(VarnishableObserver::class));
     }
@@ -22,7 +22,7 @@ trait Varnishable
      *
      * @return void
      */
-    public function __wakeup() :void
+    public function __wakeup(): void
     {
         parent::__wakeup();
 

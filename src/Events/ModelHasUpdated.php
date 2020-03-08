@@ -50,7 +50,7 @@ class ModelHasUpdated
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function createDirtyModel() :Model
+    protected function createDirtyModel(): Model
     {
         $this->model = app($this->modelClass);
         $this->model->fill($this->data);
@@ -69,7 +69,7 @@ class ModelHasUpdated
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getQuery(Model $model) :Builder
+    protected function getQuery(Model $model): Builder
     {
         $query = $model->newQuery();
 
@@ -87,7 +87,7 @@ class ModelHasUpdated
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function model() :Model
+    public function model(): Model
     {
         return $this->retrieveModel() ?? $this->createDirtyModel();
     }
@@ -98,7 +98,7 @@ class ModelHasUpdated
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    protected function retrieveModel() :?Model
+    protected function retrieveModel(): ?Model
     {
         if ($this->model !== null) {
             return $this->model;
