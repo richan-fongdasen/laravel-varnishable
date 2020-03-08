@@ -32,11 +32,11 @@ class ServiceProvider extends Provider
             $this->mergeConfigFrom($configPath, 'varnishable');
         }
 
-        $this->app->singleton(VarnishableService::class, function () {
+        $this->app->singleton(VarnishableService::class, function (): VarnishableService {
             return new VarnishableService(new Client());
         });
 
-        $this->app->singleton(VarnishableObserver::class, function () {
+        $this->app->singleton(VarnishableObserver::class, function (): VarnishableObserver {
             return new VarnishableObserver();
         });
     }
