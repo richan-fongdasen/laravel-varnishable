@@ -1,73 +1,93 @@
 {
-    "name": "richan-fongdasen/laravel-varnishable",
-    "description": "Simple and easy varnish integration in Laravel",
-    "type": "library",
-    "license": "MIT",
-    "homepage": "https://github.com/richan-fongdasen/laravel-varnishable",
-    "keywords": [
-        "laravel",
-        "laravel-package",
-        "varnish",
-        "varnish-cache"
+  "name": "richan-fongdasen/laravel-varnishable",
+  "description": "Simple and easy varnish integration in Laravel",
+  "type": "library",
+  "license": "MIT",
+  "homepage": "https://github.com/richan-fongdasen/laravel-varnishable",
+  "keywords": [
+    "laravel",
+    "laravel-package",
+    "varnish",
+    "varnish-cache"
+  ],
+  "authors": [
+    {
+      "name": "Richan Fongdasen",
+      "email": "richan.fongdasen@gmail.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/richan-fongdasen/laravel-varnishable/issues",
+    "source": "https://github.com/richan-fongdasen/laravel-varnishable"
+  },
+  "require": {
+    "php": "^7.3",
+    "guzzlehttp/guzzle": "~6.0",
+    "illuminate/database": "^6.0|^7.0",
+    "illuminate/support": "^6.0|^7.0"
+  },
+  "require-dev": {
+    "ekino/phpstan-banned-code": "^0.3.1",
+    "mockery/mockery": "~1.0",
+    "orchestra/database": "~4.0|~5.0",
+    "orchestra/testbench": "~4.0|~5.0",
+    "phpmd/phpmd": "^2.8",
+    "phpstan/phpstan": "^0.11|^0.12",
+    "phpstan/phpstan-deprecation-rules": "^0.11|^0.12",
+    "phpstan/phpstan-strict-rules": "^0.11|^0.12",
+    "phpunit/phpunit": "^8.0|^9.0",
+    "sebastian/phpcpd": "^5.0"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "RichanFongdasen\\Varnishable\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "RichanFongdasen\\Varnishable\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "RichanFongdasen\\Varnishable\\ServiceProvider"
+      ],
+      "aliases": {
+        "Varnishable": "RichanFongdasen\\Varnishable\\Facade"
+      }
+    }
+  },
+  "scripts": {
+    "analyse": [
+      "composer check-syntax",
+      "composer phpstan-analysis",
+      "composer phpmd-analysis",
+      "vendor/bin/phpcpd --min-lines=3 --min-tokens=36 src/"
     ],
-    "authors": [
-        {
-            "name": "Richan Fongdasen",
-            "email": "richan.fongdasen@gmail.com"
-        }
+    "check-syntax": [
+      "! find src -type f -name \"*.php\" -exec php -l {} \\; |  grep -v 'No syntax errors'",
+      "! find tests -type f -name \"*.php\" -exec php -l {} \\; |  grep -v 'No syntax errors'"
     ],
-    "support": {
-        "issues": "https://github.com/richan-fongdasen/laravel-varnishable/issues",
-        "source": "https://github.com/richan-fongdasen/laravel-varnishable"
-    },
-    "require": {
-        "php": "^7.2",
-        "guzzlehttp/guzzle": "~6.0",
-        "illuminate/database": "5.8.*|^6.0|^7.0",
-        "illuminate/support": "5.8.*|^6.0|^7.0"
-    },
-    "require-dev": {
-        "mockery/mockery": "~1.0",
-        "orchestra/database": "~3.8|~4.0|~5.0",
-        "orchestra/testbench": "~3.8|~4.0|~5.0",
-        "phpmd/phpmd": "^2.8",
-        "phpstan/phpstan": "^0.11|^0.12",
-        "phpstan/phpstan-deprecation-rules": "^0.11|^0.12",
-        "phpstan/phpstan-strict-rules": "^0.11|^0.12",
-        "phpunit/phpunit": "^7.5|^8.0|^9.0",
-        "sebastian/phpcpd": "^4.0|^5.0"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "autoload": {
-        "psr-4": {
-            "RichanFongdasen\\Varnishable\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "RichanFongdasen\\Varnishable\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "RichanFongdasen\\Varnishable\\ServiceProvider"
-            ],
-            "aliases": {
-                "Varnishable": "RichanFongdasen\\Varnishable\\Facade"
-            }
-        }
-    },
-    "scripts": {
-        "analyse": [
-            "! find src -type f -name '*.php' -exec php -l {} \\; |  grep -v 'No syntax errors'",
-            "vendor/bin/phpmd src/ text codesize,controversial,design,naming,unusedcode,.phpmd.cleancode.xml",
-            "vendor/bin/phpcpd --min-lines=3 --min-tokens=36 -vn src/",
-            "vendor/bin/phpstan analyse src/"
-        ]
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "phpstan-analysis": [
+      "vendor/bin/phpstan analyse -c phpstan.neon --no-progress"
+    ],
+    "phpmd-analysis": [
+      "vendor/bin/phpmd src text codesize,controversial,design,naming,unusedcode,.phpmd.cleancode.xml"
+    ],
+    "cov-text": [
+      "phpdbg -qrr vendor/bin/phpunit --coverage-text"
+    ],
+    "cov-html": [
+      "phpdbg -qrr vendor/bin/phpunit --coverage-html coverage"
+    ],
+    "test": [
+      "vendor/bin/phpunit"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -16,32 +16,35 @@ This package offers easy ways to integrate your Laravel application with Varnish
 
 ## Table of contents
 
-* [Setup](#setup)
-* [Publish package assets](#publish-package-assets)
-* [Configuration](#configuration)
-* [Usage](#usage)
-* [Credits](#credits)
-* [License](#license)
+- [Setup](#setup)
+- [Publish package assets](#publish-package-assets)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
 
 ## Setup
 
 Install the package via Composer :
+
 ```sh
 $ composer require richan-fongdasen/laravel-varnishable
 ```
 
 ### Laravel version compatibility
 
- Laravel version   | Varnishable version
-:------------------|:-----------------
- 5.1.x - 5.4.x     | 0.x
- 5.5.x - 5.8.x     | 1.0.x
+| Laravel version | Varnishable version |
+| :-------------- | :------------------ |
+| 5.1.x - 5.4.x   | 0.x                 |
+| 5.5.x - 5.8.x   | 1.0.x - 1.1.x       |
+| 6.x             | 1.2.x               |
+| 7.x             | 1.3.x               |
 
 > If you are using Laravel version 5.5+ then you can skip registering the service provider in your Laravel application.
 
 ### Service Provider
 
-Add the package service provider in your ``config/app.php``
+Add the package service provider in your `config/app.php`
 
 ```php
 'providers' => [
@@ -52,7 +55,7 @@ Add the package service provider in your ``config/app.php``
 
 ### Alias
 
-Add the package's alias in your ``config/app.php``
+Add the package's alias in your `config/app.php`
 
 ```php
 'aliases' => [
@@ -63,7 +66,7 @@ Add the package's alias in your ``config/app.php``
 
 ## Publish package assets
 
-Publish the package asset files using this ``php artisan`` command
+Publish the package asset files using this `php artisan` command
 
 ```sh
 $ php artisan vendor:publish --provider="RichanFongdasen\Varnishable\ServiceProvider"
@@ -134,7 +137,7 @@ return [
     | Use ETag Header
     |--------------------------------------------------------------------------
     |
-    | Please specify if you want to use ETag header for any of your static 
+    | Please specify if you want to use ETag header for any of your static
     | contents.
     |
     */
@@ -145,7 +148,7 @@ return [
     | Use Last-Modified Header
     |--------------------------------------------------------------------------
     |
-    | Please specify if you want to use Last-Modified header for any of your 
+    | Please specify if you want to use Last-Modified header for any of your
     | static contents.
     |
     */
@@ -183,7 +186,7 @@ This section is currently under construction.
 
 ## Credits
 
-* [spatie/laravel-varnish](https://github.com/spatie/laravel-varnish) - Some concepts in this repository was inspired by this package.
+- [spatie/laravel-varnish](https://github.com/spatie/laravel-varnish) - Some concepts in this repository was inspired by this package.
 
 ## License
 
