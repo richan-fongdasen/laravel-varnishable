@@ -39,6 +39,7 @@ $ composer require richan-fongdasen/laravel-varnishable
 | 5.5.x - 5.8.x   | 1.0.x - 1.1.x       |
 | 6.x             | 1.2.x               |
 | 7.x             | 1.3.x               |
+| 8.x             | 1.4.x               |
 
 > If you are using Laravel version 5.5+ then you can skip registering the service provider in your Laravel application.
 

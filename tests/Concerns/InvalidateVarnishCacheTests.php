@@ -3,6 +3,8 @@
 namespace RichanFongdasen\Varnishable\Tests\Concerns;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Container\Container;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 use RichanFongdasen\Varnishable\VarnishableService;
 
@@ -14,6 +16,13 @@ class InvalidateVarnishCacheTests extends TestCase
      * @var \GuzzleHttp\Client
      */
     protected $guzzle;
+
+    /**
+     * Dummy guzzle response
+     *
+     * @var Response
+     */
+    protected $response;
 
     /**
      * Varnishable service object.
@@ -36,6 +45,8 @@ class InvalidateVarnishCacheTests extends TestCase
 
         $this->guzzle = \Mockery::mock(Client::class);
         $this->service = new VarnishableService($this->guzzle);
+
+        $this->response = Container::getInstance()->make(Response::class, []);
     }
 
     /** @test */
@@ -45,11 +56,11 @@ class InvalidateVarnishCacheTests extends TestCase
         $this->guzzle->shouldReceive('request')
             ->with('FULLBAN', 'http://192.168.10.10:8888/', $options)
             ->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
         $this->guzzle->shouldReceive('request')
             ->with('FULLBAN', 'http://192.168.10.30:8888/', $options)
             ->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
 
         $this->service->flush('localhost:8000');
     }
@@ -68,17 +79,17 @@ class InvalidateVarnishCacheTests extends TestCase
 
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.10:8888/', $options1)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.30:8888/', $options1)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
 
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.10:8888/', $options2)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.30:8888/', $options2)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
 
         $this->service->banByPatterns('localhost:8000', [
             '/products/[0-9]*/view', '/product-news/(.)*'
@@ -99,17 +110,17 @@ class InvalidateVarnishCacheTests extends TestCase
 
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.10:8888/', $options1)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.30:8888/', $options1)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
 
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.10:8888/', $options2)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
         $this->guzzle->shouldReceive('request')
             ->with('BAN', 'http://192.168.10.30:8888/', $options2)->times(1)
-            ->andReturn(true);
+            ->andReturn($this->response);
 
         $this->service->banByUrls('localhost:8000', [
             '/home', '/about-us/company-overview'

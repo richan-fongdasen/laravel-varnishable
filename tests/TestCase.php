@@ -2,8 +2,8 @@
 
 namespace RichanFongdasen\Varnishable\Tests;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as BaseTest;
-use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
 
 abstract class TestCase extends BaseTest
 {
@@ -70,10 +70,11 @@ abstract class TestCase extends BaseTest
     /**
      * Invoke protected / private method of the given object
      *
-     * @param  Object      $object
-     * @param  String      $methodName
-     * @param  Array|array $parameters
+     * @param Object $object
+     * @param String $methodName
+     * @param Array|array $parameters
      * @return mixed
+     * @throws \ReflectionException
      */
     protected function invokeMethod($object, $methodName, array $parameters = [])
     {
@@ -105,37 +106,11 @@ abstract class TestCase extends BaseTest
      * to perform any tests.
      *
      * @param  string $migrationPath
-     * @param  string $factoryPath
      * @return void
      */
-    protected function prepareDatabase($migrationPath, $factoryPath = null)
+    protected function prepareDatabase($migrationPath)
     {
         $this->loadMigrationsFrom($migrationPath);
-
-        if (!$factoryPath) {
-            return;
-        }
-
-        if (method_exists($this, 'withFactories')) {
-            $this->withFactories($factoryPath);
-        } else {
-            $this->app->make(ModelFactory::class)->load($factoryPath);
-        }
-    }
-
-    /**
-     * Prepare to get an exception in a test
-     *
-     * @param  mixed $exception
-     * @return void
-     */
-    protected function prepareException($exception)
-    {
-        if (method_exists($this, 'expectException')) {
-            $this->expectException($exception);
-        } else {
-            $this->setExpectedException($exception);
-        }
     }
 
     /**
@@ -148,8 +123,11 @@ abstract class TestCase extends BaseTest
         parent::setUp();
 
         $this->prepareDatabase(
-            realpath(__DIR__ . '/Supports/database/migrations'),
-            realpath(__DIR__ . '/Supports/database/factories')
+            realpath(__DIR__ . '/Supports/Migrations')
         );
+
+        Factory::guessFactoryNamesUsing(function (string $modelName) {
+            return 'Database\\Factories\\' . class_basename($modelName) . 'Factory';
+        });
     }
 }

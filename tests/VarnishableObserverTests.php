@@ -18,7 +18,7 @@ class VarnishableObserverTests extends TestCase
     {
         parent::setUp();
 
-        factory(User::class, 10)->create();
+        User::factory(3)->create();
     }
 
     /** @test */
@@ -26,7 +26,7 @@ class VarnishableObserverTests extends TestCase
     {
         $this->expectsEvents(ModelHasUpdated::class);
 
-        factory(User::class)->create();
+        User::factory()->create();
     }
 
     /** @test */
@@ -50,7 +50,7 @@ class VarnishableObserverTests extends TestCase
     /** @test */
     public function it_fires_model_has_updated_event_on_restoring_deleted_record()
     {
-        User::find(8)->delete();
+        User::find(2)->delete();
 
         app('events')->listen(ModelHasUpdated::class, function (ModelHasUpdated $event) {
             $this->assertInstanceOf(ModelHasUpdated::class, $event);
@@ -58,10 +58,10 @@ class VarnishableObserverTests extends TestCase
             $model = $event->model();
 
             $this->assertInstanceOf(User::class, $model);
-            $this->assertEquals(8, $model->getKey());
+            $this->assertEquals(2, $model->getKey());
         });
 
-        User::withTrashed()->find(8)->restore();
+        User::withTrashed()->find(2)->restore();
     }
 
     /** @test */
@@ -73,10 +73,10 @@ class VarnishableObserverTests extends TestCase
             $model = (count($args) === 2) && is_array($args[1]) ? $args[1][0] : $args[0];
 
             $this->assertInstanceOf(User::class, $model);
-            $this->assertEquals(6, $model->getKey());
+            $this->assertEquals(2, $model->getKey());
         });
 
-        User::find(6);
+        User::find(2);
     }
 
     /** @test */
@@ -88,10 +88,10 @@ class VarnishableObserverTests extends TestCase
             $model = (count($args) === 2) && is_array($args[1]) ? $args[1][0] : $args[0];
 
             $this->assertInstanceOf(User::class, $model);
-            $this->assertEquals(6, $model->getKey());
+            $this->assertEquals(3, $model->getKey());
         });
 
-        $user = User::find(6);
+        $user = User::find(3);
 
         $serialized = serialize($user);
         unserialize($serialized);
@@ -123,7 +123,7 @@ class VarnishableObserverTests extends TestCase
     /** @test */
     public function serialized_events_can_be_unserialized_without_any_errors_with_soft_deleted_model()
     {
-        $user = User::find(6);
+        $user = User::find(3);
         $event = new ModelHasUpdated($user);
         $user->delete();
 
@@ -136,7 +136,7 @@ class VarnishableObserverTests extends TestCase
         $model = $event->model();
 
         $this->assertInstanceOf(User::class, $model);
-        $this->assertEquals(6, $model->getKey());
+        $this->assertEquals(3, $model->getKey());
         $this->assertTrue($model->exists);
         $this->assertCount(0, $model->getDirty());
     }
@@ -144,9 +144,9 @@ class VarnishableObserverTests extends TestCase
     /** @test */
     public function serialized_events_can_be_unserialized_without_any_errors_with_deleted_model()
     {
-        factory(Post::class, 10)->create();
+        Post::factory(3)->create();
 
-        $post = Post::find(8);
+        $post = Post::find(2);
         $event = new ModelHasUpdated($post);
         $post->delete();
 
@@ -158,7 +158,7 @@ class VarnishableObserverTests extends TestCase
         $model = $event->model();
 
         $this->assertInstanceOf(Post::class, $model);
-        $this->assertEquals(8, $model->getKey());
+        $this->assertEquals(2, $model->getKey());
         $this->assertFalse($model->exists);
         $this->assertCount(4, $model->getDirty());
     }
