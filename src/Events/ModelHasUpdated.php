@@ -73,7 +73,7 @@ class ModelHasUpdated
     {
         $query = $model->newQuery();
 
-        $traits = class_uses($model);
+        $traits = collect(class_uses($model))->toArray();
 
         if (in_array(SoftDeletes::class, $traits, true)) {
             $query->withTrashed();
