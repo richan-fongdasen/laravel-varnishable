@@ -53,8 +53,9 @@ class ModelHasUpdated
      * Create dirty eloquent model object
      * based on the last saved model data.
      *
-     * @return VarnishableModel
      * @throws Exception
+     *
+     * @return VarnishableModel
      */
     protected function createDirtyModel(): VarnishableModel
     {
@@ -92,8 +93,9 @@ class ModelHasUpdated
     /**
      * Model accessor.
      *
-     * @return VarnishableModel
      * @throws Exception
+     *
+     * @return VarnishableModel
      */
     public function model(): VarnishableModel
     {
@@ -103,8 +105,9 @@ class ModelHasUpdated
     /**
      * Initialize a new VarnishableModel object.
      *
-     * @return VarnishableModel
      * @throws Exception
+     *
+     * @return VarnishableModel
      */
     protected function newModel(): VarnishableModel
     {
@@ -123,8 +126,9 @@ class ModelHasUpdated
      * Retrieve fresh eloquent model from
      * run-time cache or the database.
      *
-     * @return VarnishableModel|null
      * @throws Exception
+     *
+     * @return VarnishableModel|null
      */
     protected function retrieveModel(): ?VarnishableModel
     {
