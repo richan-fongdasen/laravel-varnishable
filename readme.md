@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/richan-fongdasen/laravel-varnishable.svg?branch=master)](https://travis-ci.org/richan-fongdasen/laravel-varnishable)
+[![Build](https://github.com/richan-fongdasen/laravel-varnishable/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/richan-fongdasen/laravel-varnishable/actions/workflows/main.yml) 
 [![codecov](https://codecov.io/gh/richan-fongdasen/laravel-varnishable/branch/master/graph/badge.svg)](https://codecov.io/gh/richan-fongdasen/laravel-varnishable)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/richan-fongdasen/laravel-varnishable/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/richan-fongdasen/laravel-varnishable/?branch=master)
 [![StyleCI Analysis Status](https://github.styleci.io/repos/135787392/shield?branch=master)](https://github.styleci.io/repos/135787392)
