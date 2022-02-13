@@ -45,7 +45,8 @@ abstract class TestCase extends BaseTest
         $this->app = $app;
 
         return [
-            'Varnishable' => \RichanFongdasen\Varnishable\Facade::class,
+            'Event'       => \Illuminate\Support\Facades\Event::class,
+            'Varnishable' => \RichanFongdasen\Varnishable\Facade\Varnishable::class,
         ];
     }
 
@@ -88,9 +89,10 @@ abstract class TestCase extends BaseTest
     /**
      * Get any protected / private property value
      *
-     * @param  mixed $object
-     * @param  string $propertyName
+     * @param mixed $object
+     * @param string $propertyName
      * @return mixed
+     * @throws \ReflectionException
      */
     public function getPropertyValue($object, $propertyName)
     {

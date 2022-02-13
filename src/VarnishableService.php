@@ -20,19 +20,21 @@ class VarnishableService
      *
      * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * Guzzle client object.
      *
      * @var \GuzzleHttp\Client
      */
-    protected $guzzle;
+    protected Client $guzzle;
 
     /**
      * Class constructor.
      *
      * @param \GuzzleHttp\Client $guzzle
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __construct(Client $guzzle)
     {
@@ -47,7 +49,7 @@ class VarnishableService
      *
      * @return mixed
      */
-    public function getConfig($key = null)
+    public function getConfig(?string $key = null)
     {
         if ($key === null) {
             return $this->config;
@@ -70,6 +72,8 @@ class VarnishableService
      * Load the configurations.
      *
      * @return void
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function loadConfig(): void
     {
@@ -84,13 +88,13 @@ class VarnishableService
      *
      * @return void
      */
-    public function setConfig($key, $value): void
+    public function setConfig(string $key, $value): void
     {
         $this->config[$key] = $value;
     }
 
     /**
-     * Replace the guzzle http client object with
+     * Replace Guzzle http client object with
      * a new one.
      *
      * @param \GuzzleHttp\Client $guzzle

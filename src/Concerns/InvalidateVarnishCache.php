@@ -46,8 +46,8 @@ trait InvalidateVarnishCache
      * Generate ban request for an application hostname,
      * specified by a set of regular expression.
      *
-     * @param string $hostname
-     * @param array  $patterns
+     * @param string   $hostname
+     * @param string[] $patterns
      *
      * @throws Exception
      *
@@ -83,8 +83,8 @@ trait InvalidateVarnishCache
      * Generate ban request for an application hostname,
      * specified by a set of urls.
      *
-     * @param string $hostname
-     * @param array  $urls
+     * @param string   $hostname
+     * @param string[] $urls
      *
      * @throws Exception
      *
@@ -138,7 +138,7 @@ trait InvalidateVarnishCache
      *
      * @return mixed
      */
-    abstract public function getConfig($key);
+    abstract public function getConfig(string $key);
 
     /**
      * Get guzzle client object.

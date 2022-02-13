@@ -13,7 +13,7 @@ trait ManageLastModifiedHeader
      *
      * @var \Carbon\Carbon|null
      */
-    protected $lastModified = null;
+    protected ?Carbon $lastModified = null;
 
     /**
      * Add Last-Modified header to the current response.
@@ -88,7 +88,7 @@ trait ManageLastModifiedHeader
      *
      * @return mixed
      */
-    abstract public function getConfig($key);
+    abstract public function getConfig(string $key);
 
     /**
      * Set configuration value for a specific key.
@@ -98,5 +98,5 @@ trait ManageLastModifiedHeader
      *
      * @return void
      */
-    abstract public function setConfig($key, $value): void;
+    abstract public function setConfig(string $key, $value): void;
 }

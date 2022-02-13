@@ -3,9 +3,10 @@
 namespace RichanFongdasen\Varnishable\Tests\Supports\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use RichanFongdasen\Varnishable\Contracts\VarnishableModel;
 use RichanFongdasen\Varnishable\Model\Concerns\Varnishable;
 
-class Post extends AbstractModel
+class Post extends AbstractModel implements VarnishableModel
 {
     use HasFactory;
     use Varnishable;

@@ -2,13 +2,18 @@
 
 namespace RichanFongdasen\Varnishable\Events;
 
+use Exception;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use RichanFongdasen\Varnishable\Contracts\VarnishableModel;
 
 class ModelHasUpdated
 {
+    use Dispatchable;
+    use InteractsWithSockets;
     use SerializesModels;
 
     /**
@@ -17,28 +22,28 @@ class ModelHasUpdated
      *
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * Eloquent model object.
      *
-     * @var mixed
+     * @var VarnishableModel|null
      */
-    protected $model;
+    protected ?VarnishableModel $model = null;
 
     /**
      * Eloquent model class name.
      *
      * @var string
      */
-    protected $modelClass;
+    protected string $modelClass;
 
     /**
      * Event constructor.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      */
-    public function __construct(Model $model)
+    public function __construct(VarnishableModel $model)
     {
         $this->data = $model->toArray();
         $this->modelClass = get_class($model);
@@ -48,11 +53,13 @@ class ModelHasUpdated
      * Create dirty eloquent model object
      * based on the last saved model data.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return VarnishableModel
+     * @throws Exception
      */
-    protected function createDirtyModel(): Model
+    protected function createDirtyModel(): VarnishableModel
     {
-        $this->model = app($this->modelClass);
+        $this->model = $this->newModel();
+
         $this->model->fill($this->data);
 
         $key = $this->model->getKeyName();
@@ -65,15 +72,15 @@ class ModelHasUpdated
      * Get eloquent query builder for
      * the given eloquent model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getQuery(Model $model): Builder
+    protected function getQuery(VarnishableModel $model): Builder
     {
         $query = $model->newQuery();
 
-        $traits = class_uses($model);
+        $traits = (array) class_uses($model);
 
         if (in_array(SoftDeletes::class, $traits, true)) {
             $query->withTrashed();
@@ -85,29 +92,52 @@ class ModelHasUpdated
     /**
      * Model accessor.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return VarnishableModel
+     * @throws Exception
      */
-    public function model(): Model
+    public function model(): VarnishableModel
     {
         return $this->retrieveModel() ?? $this->createDirtyModel();
+    }
+
+    /**
+     * Initialize a new VarnishableModel object.
+     *
+     * @return VarnishableModel
+     * @throws Exception
+     */
+    protected function newModel(): VarnishableModel
+    {
+        $model = app($this->modelClass);
+
+        // @phpstan-ignore-next-line
+        if (!($model instanceof VarnishableModel)) {
+            throw new Exception('Failed to initialize new VarnishableModel.');
+        }
+
+        // @phpstan-ignore-next-line
+        return $model;
     }
 
     /**
      * Retrieve fresh eloquent model from
      * run-time cache or the database.
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return VarnishableModel|null
+     * @throws Exception
      */
-    protected function retrieveModel(): ?Model
+    protected function retrieveModel(): ?VarnishableModel
     {
-        if ($this->model !== null) {
+        if ($this->model instanceof VarnishableModel) {
             return $this->model;
         }
 
-        $model = app($this->modelClass);
+        $model = $this->newModel();
 
-        $this->model = $this->getQuery($model)->find(data_get($this->data, $model->getKeyName()));
+        $loadedModel = $this->getQuery($model)->where($model->getKeyName(), data_get($this->data, $model->getKeyName()))->first();
 
-        return ($this->model instanceof Model) ? $this->model : null;
+        $this->model = ($loadedModel instanceof VarnishableModel) ? $loadedModel : null;
+
+        return $this->model;
     }
 }

@@ -11,16 +11,16 @@ class UncacheableByVarnish
     /**
      * Varnishable Service Object.
      *
-     * @var \RichanFongdasen\Varnishable\VarnishableService
+     * @var VarnishableService
      */
-    protected $varnishable;
+    protected VarnishableService $varnishable;
 
     /**
      * UncacheableByVarnish Middleware constructor.
      */
-    public function __construct()
+    public function __construct(VarnishableService $service)
     {
-        $this->varnishable = app(VarnishableService::class);
+        $this->varnishable = $service;
     }
 
     /**

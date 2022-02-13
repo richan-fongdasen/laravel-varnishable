@@ -50,7 +50,7 @@ trait ManageEtagHeader
      *
      * @return mixed
      */
-    abstract public function getConfig($key);
+    abstract public function getConfig(string $key);
 
     /**
      * Set configuration value for a specific key.
@@ -60,5 +60,5 @@ trait ManageEtagHeader
      *
      * @return void
      */
-    abstract public function setConfig($key, $value): void;
+    abstract public function setConfig(string $key, $value): void;
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace RichanFongdasen\Varnishable;
+namespace RichanFongdasen\Varnishable\Facade;
 
-use Illuminate\Support\Facades\Facade as BaseFacade;
+use Illuminate\Support\Facades\Facade;
+use RichanFongdasen\Varnishable\VarnishableService;
 
-class Facade extends BaseFacade
+class Varnishable extends Facade
 {
     /**
      * Get the registered name of the component.

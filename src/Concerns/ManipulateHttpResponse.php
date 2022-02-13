@@ -12,7 +12,7 @@ trait ManipulateHttpResponse
      *
      * @var \Symfony\Component\HttpFoundation\HeaderBag
      */
-    protected $requestHeaders;
+    protected HeaderBag $requestHeaders;
 
     /**
      * Acknowledge the ESI support and send a specific
@@ -66,11 +66,11 @@ trait ManipulateHttpResponse
      * Normalize the cache duration value and convert
      * it to seconds.
      *
-     * @return int|float
+     * @return int
      */
-    protected function getCacheDuration()
+    protected function getCacheDuration(): int
     {
-        return $this->getConfig('cache_duration') * 60;
+        return (int) $this->getConfig('cache_duration') * 60;
     }
 
     /**
@@ -159,7 +159,7 @@ trait ManipulateHttpResponse
      *
      * @return mixed
      */
-    abstract public function getConfig($key);
+    abstract public function getConfig(string $key);
 
     /**
      * Set configuration value for a specific key.
@@ -169,5 +169,5 @@ trait ManipulateHttpResponse
      *
      * @return void
      */
-    abstract public function setConfig($key, $value): void;
+    abstract public function setConfig(string $key, $value): void;
 }

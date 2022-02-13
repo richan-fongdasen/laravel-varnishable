@@ -3,6 +3,7 @@
 namespace RichanFongdasen\Varnishable\Tests;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 use RichanFongdasen\Varnishable\Events\ModelHasUpdated;
 use RichanFongdasen\Varnishable\Tests\Supports\Models\Post;
 use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
@@ -24,27 +25,33 @@ class VarnishableObserverTests extends TestCase
     /** @test */
     public function it_fires_model_has_updated_event_on_creating_new_record()
     {
-        $this->expectsEvents(ModelHasUpdated::class);
+        Event::fake([ModelHasUpdated::class]);
 
         User::factory()->create();
+
+        Event::assertDispatched(ModelHasUpdated::class);
     }
 
     /** @test */
     public function it_fires_model_has_updated_event_on_updating_record()
     {
-        $this->expectsEvents(ModelHasUpdated::class);
+        Event::fake([ModelHasUpdated::class]);
 
         $user = User::first();
         $user->name = 'Taylor Otwell';
         $user->save();
+
+        Event::assertDispatched(ModelHasUpdated::class);
     }
 
     /** @test */
     public function it_fires_model_has_updated_event_on_deleting_record()
     {
-        $this->expectsEvents(ModelHasUpdated::class);
+        Event::fake([ModelHasUpdated::class]);
 
         User::find(1)->delete();
+
+        Event::assertDispatched(ModelHasUpdated::class);
     }
 
     /** @test */
@@ -68,7 +75,7 @@ class VarnishableObserverTests extends TestCase
     public function it_fires_eloquent_retrieved_event_on_retrieving_record_from_database()
     {
         app('events')->listen('eloquent.retrieved:*', function () {
-            $args = (array) func_get_args();
+            $args = func_get_args();
 
             $model = (count($args) === 2) && is_array($args[1]) ? $args[1][0] : $args[0];
 
@@ -83,7 +90,7 @@ class VarnishableObserverTests extends TestCase
     public function it_fires_eloquent_wakeup_event_on_unserializing_model_from_cache()
     {
         app('events')->listen('eloquent.wakeup:*', function () {
-            $args = (array) func_get_args();
+            $args = func_get_args();
 
             $model = (count($args) === 2) && is_array($args[1]) ? $args[1][0] : $args[0];
 

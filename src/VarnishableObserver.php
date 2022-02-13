@@ -3,7 +3,7 @@
 namespace RichanFongdasen\Varnishable;
 
 use Exception;
-use Illuminate\Database\Eloquent\Model;
+use RichanFongdasen\Varnishable\Contracts\VarnishableModel;
 use RichanFongdasen\Varnishable\Events\ModelHasUpdated;
 
 class VarnishableObserver
@@ -11,9 +11,9 @@ class VarnishableObserver
     /**
      * Varnishable Service Object.
      *
-     * @var \RichanFongdasen\Varnishable\VarnishableService
+     * @var VarnishableService
      */
-    protected $varnishable;
+    protected VarnishableService $varnishable;
 
     /**
      * Varnishable Observer constructor.
@@ -26,11 +26,11 @@ class VarnishableObserver
     /**
      * Listening to any saved events.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return void
      */
-    public function deleted(Model $model): void
+    public function deleted(VarnishableModel $model): void
     {
         $this->handleModelUpdates($model);
     }
@@ -39,13 +39,13 @@ class VarnishableObserver
      * Handle any retrieved and wakeup events on
      * the observed models.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @throws Exception
      *
      * @return void
      */
-    protected function handleModelInitialization(Model $model): void
+    protected function handleModelInitialization(VarnishableModel $model): void
     {
         $updatedAt = $model->getAttribute('updated_at');
 
@@ -57,23 +57,23 @@ class VarnishableObserver
     /**
      * Handle any update events on the observed models.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return void
      */
-    protected function handleModelUpdates(Model $model): void
+    protected function handleModelUpdates(VarnishableModel $model): void
     {
-        event(new ModelHasUpdated($model));
+        ModelHasUpdated::dispatch($model);
     }
 
     /**
      * Listening to any saved events.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return void
      */
-    public function restored(Model $model): void
+    public function restored(VarnishableModel $model): void
     {
         $this->handleModelUpdates($model);
     }
@@ -81,11 +81,12 @@ class VarnishableObserver
     /**
      * Listening to any retrieved events.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return void
+     * @throws Exception
      */
-    public function retrieved(Model $model): void
+    public function retrieved(VarnishableModel $model): void
     {
         $this->handleModelInitialization($model);
     }
@@ -93,11 +94,11 @@ class VarnishableObserver
     /**
      * Listening to any saved events.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return void
      */
-    public function saved(Model $model): void
+    public function saved(VarnishableModel $model): void
     {
         $this->handleModelUpdates($model);
     }
@@ -105,11 +106,12 @@ class VarnishableObserver
     /**
      * Listening to any wakeup events.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param VarnishableModel $model
      *
      * @return void
+     * @throws Exception
      */
-    public function wakeup(Model $model): void
+    public function wakeup(VarnishableModel $model): void
     {
         $this->handleModelInitialization($model);
     }

@@ -25,7 +25,7 @@ class UncacheableByVarnishTests extends TestCase
     {
         parent::setUp();
 
-        $this->middleware = new UncacheableByVarnish;
+        $this->middleware = app(UncacheableByVarnish::class);
     }
 
     /** @test */
