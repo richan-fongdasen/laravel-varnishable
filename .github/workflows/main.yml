@@ -2,15 +2,10 @@ name: Build
 
 on:
   push:
-    branches:
-      - master
-      - release/*
-      - issue-*
+    paths-ignore: ['*.md']
   pull_request:
-    branches:
-      - master
-  schedule:
-    - cron: 0 7 * * 1
+    paths-ignore: [ '*.md' ]
+    branches: [ master ]
 
 jobs:
   analysis:
@@ -23,14 +18,14 @@ jobs:
       - name: Cache composer dependencies
         uses: actions/cache@v2
         env:
-          cache-name: laravel-varnishable-composer-cache
+          cache-name: laravel-varnishable-analysis
         with:
           path: ~/.composer
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+          key: php-${{ matrix.php }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            php-${{ matrix.php }}-build-${{ env.cache-name }}-
+            php-${{ matrix.php }}-build-
+            php-${{ matrix.php }}-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -61,6 +56,17 @@ jobs:
           coverage: none
       - name: Remove some dev dependencies
         run: composer remove "ekino/phpstan-banned-code" "nunomaduro/larastan" "phpmd/phpmd" "phpstan/phpstan-deprecation-rules" "sebastian/phpcpd" --dev --no-update
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: laravel-varnishable-phpunit
+        with:
+          path: ~/.composer
+          key: php-${{ matrix.php }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php-${{ matrix.php }}-build-${{ env.cache-name }}-
+            php-${{ matrix.php }}-build-
+            php-${{ matrix.php }}-
       - name: Install composer dependencies
         run: composer install --prefer-dist
       - name: Run the test suite
@@ -76,14 +82,14 @@ jobs:
       - name: Cache composer dependencies
         uses: actions/cache@v2
         env:
-          cache-name: laravel-varnishable-composer-cache
+          cache-name: laravel-varnishable-phpunit-cov
         with:
           path: ~/.composer
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+          key: php-${{ matrix.php }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+            php-${{ matrix.php }}-build-${{ env.cache-name }}-
+            php-${{ matrix.php }}-build-
+            php-${{ matrix.php }}-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
