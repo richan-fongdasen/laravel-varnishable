@@ -33,6 +33,7 @@ class VarnishableService
      * Class constructor.
      *
      * @param \GuzzleHttp\Client $guzzle
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
@@ -71,9 +72,10 @@ class VarnishableService
     /**
      * Load the configurations.
      *
-     * @return void
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     *
+     * @return void
      */
     public function loadConfig(): void
     {

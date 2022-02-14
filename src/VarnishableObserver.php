@@ -83,8 +83,9 @@ class VarnishableObserver
      *
      * @param VarnishableModel $model
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function retrieved(VarnishableModel $model): void
     {
@@ -108,8 +109,9 @@ class VarnishableObserver
      *
      * @param VarnishableModel $model
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function wakeup(VarnishableModel $model): void
     {
