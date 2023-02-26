@@ -81,7 +81,7 @@ class ModelHasUpdated
     {
         $query = $model->newQuery();
 
-        $traits = (array) class_uses($model);
+        $traits = class_uses($model);
 
         if (in_array(SoftDeletes::class, $traits, true)) {
             $query->withTrashed();
@@ -113,12 +113,10 @@ class ModelHasUpdated
     {
         $model = app($this->modelClass);
 
-        // @phpstan-ignore-next-line
         if (!($model instanceof VarnishableModel)) {
             throw new Exception('Failed to initialize new VarnishableModel.');
         }
 
-        // @phpstan-ignore-next-line
         return $model;
     }
 
