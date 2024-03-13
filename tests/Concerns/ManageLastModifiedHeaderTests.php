@@ -4,6 +4,7 @@ namespace RichanFongdasen\Varnishable\Tests\Concerns;
 
 use Carbon\Carbon;
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 use RichanFongdasen\Varnishable\VarnishableService;
 
@@ -28,7 +29,7 @@ class ManageLastModifiedHeaderTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +39,7 @@ class ManageLastModifiedHeaderTests extends TestCase
         $this->service = app(VarnishableService::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_last_modified_header_to_the_current_response_object()
     {
         $time = new Carbon('2018-07-16 23:00:00');
@@ -49,7 +50,7 @@ class ManageLastModifiedHeaderTests extends TestCase
         $this->assertEquals($time->toRfc7231String(), $this->response->headers->get('Last-Modified'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_disable_last_modified_header_at_runtime()
     {
         $this->service->enableLastModified();
@@ -58,7 +59,7 @@ class ManageLastModifiedHeaderTests extends TestCase
         $this->assertFalse($this->service->getConfig('use_last_modified'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_enable_last_modified_header_at_runtime()
     {
         $this->service->disableLastModified();
@@ -67,7 +68,7 @@ class ManageLastModifiedHeaderTests extends TestCase
         $this->assertTrue($this->service->getConfig('use_last_modified'));
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_last_modified_value_correctly()
     {
         $time = new Carbon('2018-07-16 23:00:00');
@@ -80,7 +81,7 @@ class ManageLastModifiedHeaderTests extends TestCase
         $this->assertEquals($time->getTimestamp(), $actual->getTimestamp());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_last_modified_header_with_the_newest_timestamp()
     {
         $times = [

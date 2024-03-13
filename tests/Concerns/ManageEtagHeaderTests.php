@@ -3,6 +3,7 @@
 namespace RichanFongdasen\Varnishable\Tests\Concerns;
 
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 use RichanFongdasen\Varnishable\VarnishableService;
 
@@ -27,7 +28,7 @@ class ManageEtagHeaderTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -37,7 +38,7 @@ class ManageEtagHeaderTests extends TestCase
         $this->service = app(VarnishableService::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_an_etag_header_to_the_current_response_object()
     {
         $content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
@@ -47,10 +48,10 @@ class ManageEtagHeaderTests extends TestCase
         $this->invokeMethod($this->service, 'addEtagHeader', [$this->response]);
 
         $actual = $this->response->headers->get('etag');
-        $this->assertEquals('"'. md5($content) .'"', $actual);
+        $this->assertEquals('"' . md5($content) . '"', $actual);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_disable_etag_header_at_runtime()
     {
         $this->service->enableEtag();
@@ -59,7 +60,7 @@ class ManageEtagHeaderTests extends TestCase
         $this->assertFalse($this->service->getConfig('use_etag'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_enable_etag_header_at_runtime()
     {
         $this->service->disableEtag();
