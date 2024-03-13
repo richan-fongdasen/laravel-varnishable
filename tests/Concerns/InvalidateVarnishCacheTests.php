@@ -5,6 +5,7 @@ namespace RichanFongdasen\Varnishable\Tests\Concerns;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Container\Container;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 use RichanFongdasen\Varnishable\VarnishableService;
 
@@ -36,7 +37,7 @@ class InvalidateVarnishCacheTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -49,7 +50,7 @@ class InvalidateVarnishCacheTests extends TestCase
         $this->response = Container::getInstance()->make(Response::class, []);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_send_fullban_request_to_flush_the_entire_cache()
     {
         $options = ['headers' => ['X-Ban-Host' => 'localhost:8000']];
@@ -65,7 +66,7 @@ class InvalidateVarnishCacheTests extends TestCase
         $this->service->flush('localhost:8000');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_send_ban_requests_based_on_the_given_regex_patterns()
     {
         $options1 = ['headers' => [
@@ -96,7 +97,7 @@ class InvalidateVarnishCacheTests extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_send_ban_requests_based_on_the_given_urls()
     {
         $options1 = ['headers' => [
@@ -127,7 +128,7 @@ class InvalidateVarnishCacheTests extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_generate_varnish_url_correctly()
     {
         $actual = $this->invokeMethod($this->service, 'getVarnishUrl', ['localhost']);

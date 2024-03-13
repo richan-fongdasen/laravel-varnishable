@@ -4,6 +4,7 @@ namespace RichanFongdasen\Varnishable\Tests\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Middleware\UncacheableByVarnish;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 
@@ -21,14 +22,14 @@ class UncacheableByVarnishTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->middleware = app(UncacheableByVarnish::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_the_incoming_request_and_manipulate_the_response_headers()
     {
         $request = new Request;
@@ -36,7 +37,9 @@ class UncacheableByVarnishTests extends TestCase
 
         $this->middleware->handle(
             $request,
-            function (Request $request) use ($response) { return $response; }
+            function (Request $request) use ($response) {
+                return $response;
+            }
         );
 
         $actual = $response->headers->get(\Varnishable::getConfig('uncacheable_header'));

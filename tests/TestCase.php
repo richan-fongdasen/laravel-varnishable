@@ -59,11 +59,10 @@ abstract class TestCase extends BaseTest
     protected function getPackageProviders($app)
     {
         $this->app = $app;
-        
+
         return [
             \Illuminate\Cache\CacheServiceProvider::class,
             \Illuminate\Events\EventServiceProvider::class,
-            \Orchestra\Database\ConsoleServiceProvider::class,
             \RichanFongdasen\Varnishable\ServiceProvider::class,
         ];
     }
@@ -99,7 +98,7 @@ abstract class TestCase extends BaseTest
         $reflection = new \ReflectionClass(get_class($object));
         $property = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
- 
+
         return $property->getValue($object);
     }
 
@@ -120,7 +119,7 @@ abstract class TestCase extends BaseTest
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 

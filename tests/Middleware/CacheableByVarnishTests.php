@@ -4,6 +4,7 @@ namespace RichanFongdasen\Varnishable\Tests\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Middleware\CacheableByVarnish;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 
@@ -21,14 +22,14 @@ class CacheableByVarnishTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->middleware = app(CacheableByVarnish::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_the_incoming_request_and_manipulate_the_response_headers()
     {
         $content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
@@ -42,7 +43,9 @@ class CacheableByVarnishTests extends TestCase
 
         $this->middleware->handle(
             $request,
-            function (Request $request) use ($response) { return $response; },
+            function (Request $request) use ($response) {
+                return $response;
+            },
             180
         );
 
@@ -56,6 +59,6 @@ class CacheableByVarnishTests extends TestCase
         $this->assertEquals('max-age=10800, public', $actual);
 
         $actual = $response->headers->get('etag');
-        $this->assertEquals('"'. md5($content) .'"', $actual);
+        $this->assertEquals('"' . md5($content) . '"', $actual);
     }
 }

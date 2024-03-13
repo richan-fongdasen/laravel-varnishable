@@ -3,6 +3,7 @@
 namespace RichanFongdasen\Varnishable\Tests\Concerns;
 
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Tests\TestCase;
 use RichanFongdasen\Varnishable\VarnishableService;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -35,7 +36,7 @@ class ManipulateHttpResponseTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -46,7 +47,7 @@ class ManipulateHttpResponseTests extends TestCase
         $this->service = app(VarnishableService::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_will_acknowledge_esi_supports()
     {
         $this->headers->set(\Varnishable::getConfig('esi_capability_header'), 'v1.0');
@@ -58,7 +59,7 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertEquals('v1.0', $actual);
     }
 
-    /** @test */
+    #[Test]
     public function it_wont_acknowledge_esi_supports_when_there_was_no_esi_header_specified()
     {
         $this->service->setRequestHeaders($this->headers);
@@ -69,7 +70,7 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertNull($actual);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_cacheable_header_to_the_current_response_object()
     {
         \Varnishable::setCacheDuration(60);
@@ -82,7 +83,7 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertEquals('max-age=3600, public', $cacheControl);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_add_uncacheable_header_to_the_current_response_object()
     {
         $this->service->addUncacheableHeader($this->response);
@@ -92,13 +93,13 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertEquals('1', $uncacheable);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_calculate_total_cache_duration_in_seconds()
     {
         $data = [5, 15, 30, 60];
         $expected = [300, 900, 1800, 3600];
 
-        for ($i=0; $i<count($data); $i++) {
+        for ($i = 0; $i < count($data); $i++) {
             \Varnishable::setCacheDuration($data[$i]);
             $actual = $this->invokeMethod($this->service, 'getCacheDuration');
 
@@ -106,7 +107,7 @@ class ManipulateHttpResponseTests extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_can_fully_manipulate_http_response_as_expected()
     {
         \Varnishable::setCacheDuration(120);
@@ -127,7 +128,7 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertEquals('max-age=7200, public', $actual);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_partially_manipulate_http_response_object()
     {
         $this->headers->set(\Varnishable::getConfig('esi_capability_header'), 'v1.0');
@@ -144,7 +145,7 @@ class ManipulateHttpResponseTests extends TestCase
         $this->assertNull($actual);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_confirm_if_the_current_response_should_not_be_cached()
     {
         $uncacheableResponse = (new Response)->header(\Varnishable::getConfig('uncacheable_header'), '1');

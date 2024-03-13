@@ -4,6 +4,7 @@ namespace RichanFongdasen\Varnishable\Tests;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\Events\ModelHasUpdated;
 use RichanFongdasen\Varnishable\Tests\Supports\Models\Post;
 use RichanFongdasen\Varnishable\Tests\Supports\Models\User;
@@ -15,14 +16,14 @@ class VarnishableObserverTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
         User::factory(3)->create();
     }
 
-    /** @test */
+    #[Test]
     public function it_fires_model_has_updated_event_on_creating_new_record()
     {
         Event::fake([ModelHasUpdated::class]);
@@ -32,7 +33,7 @@ class VarnishableObserverTests extends TestCase
         Event::assertDispatched(ModelHasUpdated::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_fires_model_has_updated_event_on_updating_record()
     {
         Event::fake([ModelHasUpdated::class]);
@@ -44,7 +45,7 @@ class VarnishableObserverTests extends TestCase
         Event::assertDispatched(ModelHasUpdated::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_fires_model_has_updated_event_on_deleting_record()
     {
         Event::fake([ModelHasUpdated::class]);
@@ -54,7 +55,7 @@ class VarnishableObserverTests extends TestCase
         Event::assertDispatched(ModelHasUpdated::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_fires_model_has_updated_event_on_restoring_deleted_record()
     {
         User::find(2)->delete();
@@ -71,7 +72,7 @@ class VarnishableObserverTests extends TestCase
         User::withTrashed()->find(2)->restore();
     }
 
-    /** @test */
+    #[Test]
     public function it_fires_eloquent_retrieved_event_on_retrieving_record_from_database()
     {
         app('events')->listen('eloquent.retrieved:*', function () {
@@ -86,7 +87,7 @@ class VarnishableObserverTests extends TestCase
         User::find(2);
     }
 
-    /** @test */
+    #[Test]
     public function it_fires_eloquent_wakeup_event_on_unserializing_model_from_cache()
     {
         app('events')->listen('eloquent.wakeup:*', function () {
@@ -104,7 +105,7 @@ class VarnishableObserverTests extends TestCase
         unserialize($serialized);
     }
 
-    /** @test */
+    #[Test]
     public function it_would_set_last_modified_with_the_newest_updated_at_timestamp()
     {
         $expected = User::orderBy('updated_at', 'desc')->first()->updated_at;
@@ -117,7 +118,7 @@ class VarnishableObserverTests extends TestCase
         $this->assertEquals($expected->getTimestamp(), $actual->getTimestamp());
     }
 
-    /** @test */
+    #[Test]
     public function it_cant_set_last_modified_when_there_was_no_updated_at_columns_available()
     {
         User::all(['id', 'name', 'email']);
@@ -127,7 +128,7 @@ class VarnishableObserverTests extends TestCase
         $this->assertNull($actual);
     }
 
-    /** @test */
+    #[Test]
     public function serialized_events_can_be_unserialized_without_any_errors_with_soft_deleted_model()
     {
         $user = User::find(3);
@@ -148,7 +149,7 @@ class VarnishableObserverTests extends TestCase
         $this->assertCount(0, $model->getDirty());
     }
 
-    /** @test */
+    #[Test]
     public function serialized_events_can_be_unserialized_without_any_errors_with_deleted_model()
     {
         Post::factory(3)->create();

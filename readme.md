@@ -1,4 +1,4 @@
-[![Build](https://github.com/richan-fongdasen/laravel-varnishable/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/richan-fongdasen/laravel-varnishable/actions/workflows/main.yml) 
+[![Build](https://github.com/richan-fongdasen/laravel-varnishable/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/richan-fongdasen/laravel-varnishable/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/richan-fongdasen/laravel-varnishable/branch/master/graph/badge.svg)](https://codecov.io/gh/richan-fongdasen/laravel-varnishable)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/richan-fongdasen/laravel-varnishable/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/richan-fongdasen/laravel-varnishable/?branch=master)
 [![StyleCI Analysis Status](https://github.styleci.io/repos/135787392/shield?branch=master)](https://github.styleci.io/repos/135787392)
@@ -34,7 +34,7 @@ $ composer require richan-fongdasen/laravel-varnishable
 ### Laravel version compatibility
 
 | Laravel version | Varnishable version |
-|:----------------|:--------------------|
+| :-------------- | :------------------ |
 | 5.1.x - 5.4.x   | 0.x                 |
 | 5.5.x - 5.8.x   | 1.0.x - 1.1.x       |
 | 6.x             | 1.2.x               |
@@ -42,6 +42,7 @@ $ composer require richan-fongdasen/laravel-varnishable
 | 8.x             | ^1.4.x              |
 | 9.x             | 2.0.x               |
 | 10.x            | 2.1.x               |
+| 11.x            | 2.2.x               |
 
 > If you are using Laravel version 5.5+ then you can skip registering the service provider in your Laravel application.
 

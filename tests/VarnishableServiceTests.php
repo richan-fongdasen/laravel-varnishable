@@ -3,6 +3,7 @@
 namespace RichanFongdasen\Varnishable\Tests;
 
 use GuzzleHttp\Client;
+use PHPUnit\Framework\Attributes\Test;
 use RichanFongdasen\Varnishable\VarnishableService;
 
 class VarnishableServiceTests extends TestCase
@@ -19,7 +20,7 @@ class VarnishableServiceTests extends TestCase
      *
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +29,7 @@ class VarnishableServiceTests extends TestCase
         $this->service = app(VarnishableService::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_all_of_configurations_on_empty_key()
     {
         $configs = $this->service->getConfig();
@@ -38,7 +39,7 @@ class VarnishableServiceTests extends TestCase
         $this->assertEquals('8888', $configs['varnish_port']);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_configuration_values_correctly()
     {
         $this->assertEquals(8888, $this->service->getConfig('varnish_port'));
@@ -47,7 +48,7 @@ class VarnishableServiceTests extends TestCase
         $this->assertEquals('X-Varnish-Cacheable', $this->service->getConfig('cacheable_header'));
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_guzzle_client_object_as_expected()
     {
         $guzzle = $this->service->getGuzzle();
@@ -55,7 +56,7 @@ class VarnishableServiceTests extends TestCase
         $this->assertInstanceOf(Client::class, $guzzle);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_configuration_values_at_runtime()
     {
         $this->service->setConfig('cache_duration', 600);
@@ -63,7 +64,7 @@ class VarnishableServiceTests extends TestCase
         $this->assertEquals(600, $this->service->getConfig('cache_duration'));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_replace_the_guzzle_client_object_with_a_new_one()
     {
         $newGuzzle = new Client(['base_uri' => 'https://laravel.com/', 'timeout' => 10]);
