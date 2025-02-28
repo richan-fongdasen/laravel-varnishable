@@ -6,11 +6,12 @@ includes:
 
 parameters:
     level: 8
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
     paths:
         - src
     ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics
+        - identifier: trait.unused
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withTrashed\(\).#'
     banned_code:
         nodes:
